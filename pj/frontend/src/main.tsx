@@ -7,11 +7,14 @@ import Feed from './pages/Feed.tsx'
 import Upload from './pages/Upload.tsx'
 import Profile from './pages/Profile.tsx'
 import Post from './pages/Post.tsx'
+import ProtectedRoutes from './components/ProtectedRoute.tsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Feed />
+    element: (
+      <ProtectedRoutes><Feed /></ProtectedRoutes>
+    )
   },
   {
     path: "/upload",
