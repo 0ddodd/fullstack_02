@@ -1,35 +1,70 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { AuthService } from 'src/auth/auth.service';
+import { LoginResponse, RegisterResponse } from 'src/auth/types';
+import { LoginDto, RegisterDto } from 'src/auth/dto/dto';
+import { BadRequestException } from '@nestjs/common';
+import { Response, Request } from 'express';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService
+  ) {}
 
-  @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.create(createUserInput);
+  @Mutation(() => RegisterResponse)
+  async register(
+    @Args('registerInput') registerDto: RegisterDto,
+    @Context() context: {res: Response}
+  ): Promise<RegisterResponse> {
+
+    if (registerDto.password !== registerDto.confirmPassword) {
+      throw new BadRequestException({
+        confirmPassword: 'Password and confirm password are not the same.',
+      });
+    };
+
+    try {
+      const { user } = await this.authService.register(
+        registerDto,
+        context.res,
+      );
+      console.log('user!', user);
+      return { user };
+    } catch (error) {
+      // Handle the error, for instance if it's a validation error or some other type
+      return {
+        error: {
+          message: error.message,
+          // code: 'SOME_ERROR_CODE' // If you have error codes
+        },
+      };
+    }
   }
 
-  @Query(() => [User], { name: 'user' })
-  findAll() {
-    return this.userService.findAll();
+  @Mutation(() => LoginResponse)
+  async login(
+    @Args('loginInput') loginDto: LoginDto,
+    @Context() context: { res: Response },
+  ) {
+    return this.authService.login(loginDto, context.res);
   }
 
-  @Query(() => User, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.userService.findOne(id);
+  @Mutation(() => String)
+  async logout(@Context() context: { res: Response }) {
+    return this.authService.logout(context.res);
   }
 
-  @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.userService.update(updateUserInput.id, updateUserInput);
-  }
-
-  @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.userService.remove(id);
+  @Mutation(() => String)
+  async refreshToken(@Context() context: { req: Request; res: Response }) {
+    try {
+      return this.authService.refreshToken(context.req, context.res);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

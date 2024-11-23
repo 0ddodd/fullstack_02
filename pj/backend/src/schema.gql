@@ -7,23 +7,34 @@ input CreatePostInput {
   exampleField: Int!
 }
 
-input CreateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
 
+type ErrorType {
+  code: String
+  message: String!
+}
+
+input LoginDto {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  error: ErrorType
+  user: User!
+}
+
 type Mutation {
   createPost(createPostInput: CreatePostInput!): Post!
-  createUser(createUserInput: CreateUserInput!): User!
+  login(loginInput: LoginDto!): LoginResponse!
+  logout: String!
+  refreshToken: String!
+  register(registerInput: RegisterDto!): RegisterResponse!
   removePost(id: Int!): Post!
-  removeUser(id: Int!): User!
   updatePost(updatePostInput: UpdatePostInput!): Post!
-  updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 type Post {
@@ -33,16 +44,21 @@ type Post {
 
 type Query {
   post(id: Int!): Post!
-  user(id: Int!): User!
+}
+
+input RegisterDto {
+  confirmPassword: String!
+  email: String!
+  fullname: String!
+  password: String!
+}
+
+type RegisterResponse {
+  error: ErrorType
+  user: User
 }
 
 input UpdatePostInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input UpdateUserInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
