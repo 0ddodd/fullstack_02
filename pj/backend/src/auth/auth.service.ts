@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { Response, Request } from 'express';
 import { User } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
+import { LoginDto, RegisterDto } from './dto/dto';
 
 @Injectable()
 export class AuthService {
@@ -50,13 +51,12 @@ export class AuthService {
     res.cookie('access_token', accessToken, {httpOnly: true});
 
     return accessToken;
-
   };
 
   private async issueTokens(user: User, response: Response) {
     const payload = { username: user.fullname, sub: user.id };
     const accessToken = this.jwtService.sign(
-      { ...payload},
+      { ...payload },
       {
         secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
         expiresIn: '150sec',
@@ -77,12 +77,54 @@ export class AuthService {
     });
 
     return { user };
-
   };
 
-  // async validateUser (loginDto: LoginDto) {
+  async validateUser (loginDto: LoginDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: loginDto.email }
+    });
 
-  // }
+    if (user && (await bcrypt.compare(loginDto.password, user.password))) {
+      return user;
+    };
 
+    return null;
+  };
+
+  async register (registerDto: RegisterDto, response: Response) {
+    const existedUser = await this.prisma.user.findUnique({
+      where: { email: registerDto.email },
+    });
+
+    if (existedUser) {
+      throw new Error('Email is already used.');
+    }
+
+    const hashedPassword = await bcrypt.hash(registerDto.password, 10);
+    const user = await this.prisma.user.create({
+      data: {
+        fullname: registerDto.fullname,
+        password: hashedPassword,
+        email: registerDto.email,
+      }
+    });
+
+    return this.issueTokens(user, response);
+  };
+
+  async login (loginDto: LoginDto, response: Response) {
+    const user = await this.validateUser(loginDto);
+    if (!user) {
+      throw new UnauthorizedException('Invalid Credentials.');
+    }
+    return this.issueTokens(user, response);
+  };
+
+  async logout (response: Response) {
+    response.clearCookie('access_token');
+    response.clearCookie('refresh_token');
+    return 'Logged out successfully.';
+  }
+  
 
 }
