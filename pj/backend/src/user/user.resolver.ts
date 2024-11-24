@@ -6,9 +6,11 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginResponse, RegisterResponse } from 'src/auth/dto/auth-response.dto';
 import { LoginDto, RegisterDto } from 'src/auth/dto/auth.dto';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UseFilters } from '@nestjs/common';
 import { Response, Request } from 'express';
+import { GraphQLErrorFilter } from 'src/filters/custom-exception.filter';
 
+@UseFilters(GraphQLErrorFilter)
 @Resolver(() => User)
 export class UserResolver {
   constructor(
@@ -28,20 +30,13 @@ export class UserResolver {
       });
     };
 
-    try {
-      const { user } = await this.authService.register(
-        registerDto,
-        context.res,
-      );
-      console.log('user!', user);
-      return { user };
-    } catch (error) {
-      return {
-        error: {
-          message: error.message,
-        },
-      };
-    }
+    const { user } = await this.authService.register(
+      registerDto,
+      context.res,
+    );
+    
+    return { user };
+    
   }
 
   @Mutation(() => LoginResponse)

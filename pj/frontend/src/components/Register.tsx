@@ -5,9 +5,10 @@ import { RegisterUserMutation } from '../gql/graphql';
 import { useUserStore } from '../stores/userStore';
 import { useGeneralStore } from '../stores/generalStore';
 import { GraphQLErrorExtensions } from 'graphql';
+import Input from './Input';
 
 function Register() {
-    const [registerUser, {loading, error, data}] = useMutation(REGISTER_USER);
+    const [registerUser, {loading, error, data}] = useMutation<RegisterUserMutation>(REGISTER_USER);
     
     const setUser = useUserStore((state) => state.setUser);
     const setIsLoginOpen = useGeneralStore((state) => state.setLoginIsOpen);
@@ -45,9 +46,76 @@ function Register() {
     }
 
     return (
-        <div>
-            <div className="text-center text-[28px] mb-4 font-bold"></div>
-        </div>
+        <>
+            <div className="text-center text-[28px] mb-4 font-bold">Sign up</div>
+    
+            <div className="px-6 pb-2">
+                <Input
+                    max={64}
+                    placeHolder="Name"
+                    inputType="text"
+                    onChange={(e) => setRegisterData({
+                        ...registerData,
+                        fullName: e.target.value
+                    })}
+                    autoFocus={true}
+                    error={errors?.fullName as string}
+                />
+            </div>
+            <div className="px-6 pb-2">
+                <Input
+                    max={64}
+                    placeHolder="Email"
+                    inputType="email"
+                    onChange={(e) => setRegisterData({
+                        ...registerData,
+                        email: e.target.value
+                    })}
+                    autoFocus={false}
+                    error={errors?.email as string}
+                />
+            </div>
+            <div className="px-6 pb-2">
+                <Input
+                    max={64}
+                    placeHolder="Password"
+                    inputType="password"
+                    onChange={(e) => setRegisterData({
+                        ...registerData,
+                        password: e.target.value
+                    })}
+                    autoFocus={false}
+                    error={errors?.password as string}
+                />
+            </div>
+            <div className="px-6 pb-2">
+                <Input
+                    max={64}
+                    placeHolder="Confirm Password"
+                    inputType="password"
+                    onChange={(e) => setRegisterData({
+                        ...registerData,
+                        confirmPassword: e.target.value
+                    })}
+                    autoFocus={false}
+                    error={errors?.confirmPassword as string}
+                />
+            </div>
+            <div className="px-6 pb-2">
+                <button
+                    className={[
+                    "w-full text-[17px] font-semibold text-white py-3 rounded-sm",
+                    !registerData.email ||
+                    !registerData.password ||
+                    !registerData.fullName ||
+                    !registerData.confirmPassword
+                        ? "bg-gray-200"
+                        : "bg-[#F02C56]",
+                    ].join(" ")}
+                    onClick={handleRegister}
+                >Register</button>
+            </div>
+        </>
     )
 }
 

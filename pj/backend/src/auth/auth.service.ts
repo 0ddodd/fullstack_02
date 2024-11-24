@@ -97,7 +97,7 @@ export class AuthService {
     });
 
     if (existedUser) {
-      throw new Error('Email is already used.');
+      throw new BadRequestException({email: 'Email is already used.'});
     }
 
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
@@ -115,7 +115,7 @@ export class AuthService {
   async login (loginDto: LoginDto, response: Response) {
     const user = await this.validateUser(loginDto);
     if (!user) {
-      throw new UnauthorizedException('Invalid Credentials.');
+      throw new BadRequestException({invalidCredentials: 'Invalid Credentials.'});
     }
     return this.issueTokens(user, response);
   };
