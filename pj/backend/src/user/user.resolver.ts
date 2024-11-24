@@ -4,8 +4,8 @@ import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { AuthService } from 'src/auth/auth.service';
-import { LoginResponse, RegisterResponse } from 'src/auth/types';
-import { LoginDto, RegisterDto } from 'src/auth/dto/dto';
+import { LoginResponse, RegisterResponse } from 'src/auth/dto/auth-response.dto';
+import { LoginDto, RegisterDto } from 'src/auth/dto/auth.dto';
 import { BadRequestException } from '@nestjs/common';
 import { Response, Request } from 'express';
 
@@ -36,11 +36,9 @@ export class UserResolver {
       console.log('user!', user);
       return { user };
     } catch (error) {
-      // Handle the error, for instance if it's a validation error or some other type
       return {
         error: {
           message: error.message,
-          // code: 'SOME_ERROR_CODE' // If you have error codes
         },
       };
     }

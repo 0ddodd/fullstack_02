@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { Response, Request } from 'express';
 import { User } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
-import { LoginDto, RegisterDto } from './dto/dto';
+import { LoginDto, RegisterDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {

@@ -4,7 +4,7 @@ import { useUserStore } from "../stores/userStore"
 import { useGeneralStore } from "../stores/generalStore"
 
 export const ProtectedRoutes = ({ children }: { children: ReactNode }) => {
-    const user = useUserStore((state) => state);
+    const userId = useUserStore((state) => state.id);
     const setUser = useUserStore((state) => state.setUser);
 
     const navigate = useNavigate();
@@ -17,24 +17,21 @@ export const ProtectedRoutes = ({ children }: { children: ReactNode }) => {
     // }, [user.id, navigate, setLoginIsOpen])
     
     useEffect(() => {
-        // 예시: 사용자 데이터를 가져와서 저장
-        const userData = {
-            id: undefined,
-            fullname: "",
-            email: "",
-            bio: "",
-            image: "",
-        };
-        setUser(userData); // Zustand 상태 업데이트
-        setLoginIsOpen(true)
+        if (!userId) {
+            const userData = {
+                id: undefined,
+                fullname: "",
+                email: "",
+                bio: "",
+                image: "",
+            };
+            setUser(userData);
+            setLoginIsOpen(true)
+            navigate("/")
+        }
+    }, [userId, setUser, setLoginIsOpen]);
 
-
-    }, [setUser]);
-
-    console.log("********");
-    console.log(user); //뜸
-
-    if (!user.id) {
+    if (!userId) {
         return <>No Access</>;
     }
     
