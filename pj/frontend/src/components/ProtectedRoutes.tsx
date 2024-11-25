@@ -9,13 +9,8 @@ export const ProtectedRoutes = ({ children }: { children: ReactNode }) => {
 
     const navigate = useNavigate();
     const setLoginIsOpen = useGeneralStore((state) => state.setLoginIsOpen);
-    // useEffect(() => {
-    //     if (!user.id) {
-    //         navigate("/")
-    //         setLoginIsOpen(true)
-    //     }
-    // }, [user.id, navigate, setLoginIsOpen])
-    
+
+    // 흠...
     useEffect(() => {
         if (!userId) {
             const userData = {
