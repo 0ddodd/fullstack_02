@@ -121,7 +121,7 @@ function UpperNav() {
                                 {user.id && (
                                     <div
                                         onClick={handleLogout}
-                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
                                     >
                                         <GrLogout size="20" color="#161724" />
                                         <span className="font-semibold text-sm">Log out</span>

@@ -43,6 +43,7 @@ type Post {
 }
 
 type Query {
+  getUsers: [User!]!
   post(id: Int!): Post!
 }
 

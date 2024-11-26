@@ -14,10 +14,20 @@ const MenuItem:React.FC<IconComponentProps> = ({
 }) => {
     let Icon: IconType | null = null;
 
-    if (iconString === "For You") Icon = AiFillHome;
-    if (iconString === "Following") Icon = BiGroup;
-    if (iconString === "LIVE") Icon = RiLiveLine;
-
+    switch (iconString) {
+        case "For You":
+            Icon = AiFillHome;
+            break;
+        case "Following":
+            Icon = BiGroup;
+            break;
+        case "LIVE":
+            Icon = RiLiveLine;
+            break;
+        default:
+            Icon = null;
+            break;
+    }
     
     return (
         <div className="w-full flex items-center hover:bg-gray-100 p-2.5 rounded-md">

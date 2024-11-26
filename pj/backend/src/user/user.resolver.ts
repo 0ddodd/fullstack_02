@@ -60,4 +60,9 @@ export class UserResolver {
       throw new BadRequestException(error.message);
     }
   }
+
+  @Query(() => [User])
+  async getUsers() {
+    return this.userService.getUsers();
+  }
 }
