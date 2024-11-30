@@ -2,11 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input CreatePostInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -15,6 +10,12 @@ scalar DateTime
 type ErrorType {
   code: String
   message: String!
+}
+
+type LikeType {
+  id: Int!
+  postId: Int!
+  userId: Int!
 }
 
 input LoginDto {
@@ -28,23 +29,14 @@ type LoginResponse {
 }
 
 type Mutation {
-  createPost(createPostInput: CreatePostInput!): Post!
   login(loginInput: LoginDto!): LoginResponse!
   logout: String!
   refreshToken: String!
   register(registerInput: RegisterDto!): RegisterResponse!
-  removePost(id: Int!): Post!
-  updatePost(updatePostInput: UpdatePostInput!): Post!
-}
-
-type Post {
-  """Example field (placeholder)"""
-  exampleField: Int!
 }
 
 type Query {
   getUsers: [User!]!
-  post(id: Int!): Post!
 }
 
 input RegisterDto {
@@ -57,12 +49,6 @@ input RegisterDto {
 type RegisterResponse {
   error: ErrorType
   user: User
-}
-
-input UpdatePostInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 type User {

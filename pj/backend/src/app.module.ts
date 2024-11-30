@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserModule } from './user/user.module';
     PostModule,
     AuthModule,
     UserModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
