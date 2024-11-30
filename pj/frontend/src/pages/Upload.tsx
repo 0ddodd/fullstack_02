@@ -21,7 +21,7 @@ function Upload() {
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setFileDisplay(URL.createObjectURL(e.target.files[0]));
-            setFileData(e.target.files[0])
+            setFileData(e.target.files[0]);
         }
     };
 
@@ -38,7 +38,6 @@ function Upload() {
 
     const handleCreatePost = async () => {
         try {
-            console.log("FILE DATA", fileData);
             setIsUploading(true);
             await createPost();
             setIsUploading(false);
@@ -49,7 +48,7 @@ function Upload() {
         }
     };
 
-    const onDrop = (e: DragEvent<HTMLLabelElement>) => {
+    const onDrop = (e) => {
         setErrorType(null);
         setFile(e.dataTransfer.files[0]);
 
