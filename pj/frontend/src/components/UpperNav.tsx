@@ -34,6 +34,9 @@ function UpperNav() {
                 image: ""
             });
             setIsLoginOpen(true);
+            // localStorage.removeItem('accessToken');
+            // localStorage.removeItem('refreshToken');
+
         } catch (err) {
             console.log(err)
         }

@@ -35,10 +35,10 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
     <ApolloProvider client={client}>
       <RouterProvider router={router}/>
       <App />
     </ApolloProvider>
-  </StrictMode>,
+  // </StrictMode>,
 )

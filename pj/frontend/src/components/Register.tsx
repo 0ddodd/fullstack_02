@@ -23,25 +23,30 @@ function Register() {
     const handleRegister = async() => {
         setErrors({})
 
-        await registerUser({
-            variables: {
-                email: registerData.email,
-                password: registerData.password,
-                fullname: registerData.fullName,
-                confirmPassword: registerData.confirmPassword
-            }
-        }).catch((err) => {
+        try {
+            const resp =  await registerUser({
+                variables: {
+                    email: registerData.email,
+                    password: registerData.password,
+                    fullname: registerData.fullName,
+                    confirmPassword: registerData.confirmPassword
+                }
+            });
+
+            if (resp?.data?.register.user) {
+                setUser({
+                    id: resp.data.register.user.id,
+                    email: resp.data.register.user.email,
+                    fullname: resp.data.register.user.fullname
+                });
+
+                setIsLoginOpen(false);
+            
+            };
+
+        } catch (err) {
             console.log(err.graphQLErrors);
             setErrors(err.graphQLErrors[0].extensions);
-        });
-
-        if (data?.register.user) {
-            setUser({
-                id: data?.register.user.id,
-                email: data?.register.user.email,
-                fullname: data?.register.user.fullname
-            });
-            setIsLoginOpen(false);
         }
     }
 

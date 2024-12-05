@@ -65,9 +65,10 @@ const uploadLink = createUploadLink({
     uri: "http://localhost:3000/graphql",
     credentials: "include",
     headers: {
-        "apollo-require-preflight": "true"
+        "apollo-require-preflight": "true",
     }
 })
+console.log(uploadLink)
 
 export const client = new ApolloClient({
     uri: "http://localhost:3000/graphql",

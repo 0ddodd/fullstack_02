@@ -15,6 +15,7 @@ export class PostService {
     filename: string;
     mimetype: string;
   }): Promise<string> {
+    
     if (!video || !['video/mp4'].includes(video.mimetype)) {
       throw new BadRequestException(
         'Invalid video file format.'

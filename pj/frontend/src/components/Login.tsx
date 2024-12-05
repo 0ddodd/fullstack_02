@@ -31,7 +31,13 @@ function Login() {
                 }
             });
 
+            console.log(resp);
+
             if (resp?.data?.login.user) {
+                
+                // localStorage.setItem("accessToken", resp.data.login.accessToken);
+                // localStorage.setItem("refreshToken", resp.data.login.refreshToken);
+
                 const user = resp.data.login.user;
 
                 setUser({

@@ -40,8 +40,9 @@ export class UserResolver {
   @Mutation(() => LoginResponse)
   async login(
     @Args('loginInput') loginDto: LoginDto,
-    @Context() context: { res: Response },
+    @Context() context: { req: Request, res: Response },
   ) {
+    // console.log(context.req)
     return this.authService.login(loginDto, context.res);
   }
 

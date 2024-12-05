@@ -3,11 +3,15 @@ import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { ValidationContext } from 'graphql';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { graphqlUploadExpress } from 'graphql-upload-ts';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
+  app.use(cookieParser());
+  
   app.enableCors({
-    origin: 'http://127.0.0.1:5174',
+    origin: 'http://127.0.0.1:5173',
     credentials: true,
     allowedHeaders: [
       'Accept',
@@ -19,7 +23,11 @@ async function bootstrap() {
     methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS']
   });
   
-  app.use(cookieParser());
+  // app.use(cookieParser());
+
+  // `graphql-upload` 미들웨어 설정
+  app.use(graphqlUploadExpress());
+  
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

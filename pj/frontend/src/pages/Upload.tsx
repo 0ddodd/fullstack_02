@@ -30,20 +30,46 @@ function Upload() {
             console.log(err);
             setErrors(err.graphQLErrors[0].extensions?.errors as string[]);
         },
-        variables: {
-            text: caption,
-            video: fileData
-        }
+        // variables: {
+        //     text: caption,
+        //     video: fileData
+        // }
     });
 
     const handleCreatePost = async () => {
+        if (!fileData) {
+            setErrors(["Please upload a video before posting."]);  // 파일이 없으면 오류 표시
+            return;
+        }
         try {
             setIsUploading(true);
-            await createPost();
+            console.log(fileData);
+            console.log('before create post')
+
+            // API 요청 전에 쿠키를 설정
+            // document.cookie = "userToken=yourTokenValue; path=/; max-age=3600";  
+
+            console.log('🍪🍪🍪')
+            console.log(document.cookie)
+
+            const resp = await createPost({
+                variables: {
+                    text: caption,
+                    video: fileData
+                }
+            });
+
+            if (resp) {
+                console.log('Response:', resp);
+            } else {
+                console.log('No response received');
+            }
+
             setIsUploading(false);
             setShow(true);
             clearVideo();
         } catch (err) {
+            console.log('error~~s')
             console.log(err)
         }
     };
@@ -74,13 +100,11 @@ function Upload() {
     };
 
     useEffect(() => {
-        console.log(caption.length);
         if (caption.length === 150) {
             setErrorType("caption");
             return;
         }
         setErrorType(null);
-        console.log("caption", errorType)
     }, [errorType, caption]);
 
     return (
