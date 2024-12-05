@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Post, Prisma } from '@prisma/client';
-import { createWriteStream } from 'fs';
+import { createWriteStream, existsSync, promises as fsPromises } from 'fs';
 import { extname } from 'path';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -26,6 +26,12 @@ export class PostService {
     const videoPath = `/files/$${videoName}`;
     const stream = video.createReadStream();
     const outputPath = `public${videoPath}`;
+
+    const directoryPath = `public/files`;
+    if (!existsSync(directoryPath)) {
+      await fsPromises.mkdir(directoryPath, { recursive: true });
+    }
+
     const writeStream = createWriteStream(outputPath);
     stream.pipe(writeStream);
 

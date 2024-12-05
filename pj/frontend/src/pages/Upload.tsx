@@ -43,15 +43,6 @@ function Upload() {
         }
         try {
             setIsUploading(true);
-            console.log(fileData);
-            console.log('before create post')
-
-            // API 요청 전에 쿠키를 설정
-            // document.cookie = "userToken=yourTokenValue; path=/; max-age=3600";  
-
-            console.log('🍪🍪🍪')
-            console.log(document.cookie)
-
             const resp = await createPost({
                 variables: {
                     text: caption,
@@ -68,8 +59,8 @@ function Upload() {
             setIsUploading(false);
             setShow(true);
             clearVideo();
+            
         } catch (err) {
-            console.log('error~~s')
             console.log(err)
         }
     };

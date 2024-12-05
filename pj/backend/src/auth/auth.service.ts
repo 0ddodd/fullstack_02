@@ -61,8 +61,6 @@ export class AuthService {
         secret: this.configService.get<string>('ACCESS_TOKEN_SECRET')
       }
     );
-    console.log('xxxxxxxxxxx')
-    console.log(accessToken);
 
     res.cookie('access_token', accessToken, {
       httpOnly: true,
@@ -92,8 +90,6 @@ export class AuthService {
         expiresIn: '7d',
       }
     );
-
-    // console.log(accessToken, "~~~~~~~~~~" , refreshToken)
 
     response.cookie('access_token', accessToken, { 
       httpOnly: true, 
@@ -149,8 +145,6 @@ export class AuthService {
 
   async login (loginDto: LoginDto, response: Response) {
     const user = await this.validateUser(loginDto);
-    console.log(user)
-    // console.log(response)
 
     if (!user) {
       throw new BadRequestException({invalidCredentials: 'Invalid Credentials.'});

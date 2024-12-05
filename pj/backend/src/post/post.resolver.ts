@@ -19,17 +19,9 @@ export class PostResolver {
         @Args({ name: 'video', type: () => GraphQLUpload }) video: any,
         @Args('text') text: string,
     ) {
-
-        console.log('📼📼📼📼📼')
-        console.log(video)
         
         const userId = context.req.user.sub;
-        console.log('🆔')
-        console.log(userId)
-
         const videoPath = await this.postService.saveVideo(video);
-        console.log('🌲🌲🌲🌲🌲')
-        console.log(videoPath)
         const postData = {
             text,
             video: videoPath,
