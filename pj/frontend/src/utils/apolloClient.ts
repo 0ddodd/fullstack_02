@@ -11,6 +11,7 @@ import { onError } from "@apollo/client/link/error";
 
 async function refreshToken(client: ApolloClient<NormalizedCacheObject>) {
     try {
+        console.log('refresh token 실행')
         const {data} = await client.mutate({
             mutation: gql`
                 mutation RefreshToken {
@@ -18,6 +19,7 @@ async function refreshToken(client: ApolloClient<NormalizedCacheObject>) {
                 }
             `
         })
+        console.log(data)
 
         const newAccessToken = data?.refreshToken;
         if (!newAccessToken) {

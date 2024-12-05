@@ -7,8 +7,6 @@ export const LOGIN_USER = gql`
                 id
                 fullname
             }
-            accessToken
-            refreshToken
         }
     }
 `
