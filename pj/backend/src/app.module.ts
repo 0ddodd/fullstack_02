@@ -5,6 +5,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static'
 import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
 import { AuthModule } from './auth/auth.module';
@@ -21,6 +22,10 @@ import { LikeModule } from './like/like.module';
       context: ({req,res}) => ({req, res})
     }),
     ConfigModule.forRoot({}),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/',
+    }),
     PostModule,
     AuthModule,
     UserModule,

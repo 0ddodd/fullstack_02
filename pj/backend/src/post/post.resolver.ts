@@ -41,7 +41,7 @@ export class PostResolver {
         @Args('skip', { type: () => Int, defaultValue: 0}) skip: number,
         @Args('take', { type: () => Int, defaultValue: 1}) take: number,
     ): Promise<PostType[]> {
-        console.log('skip', skip, 'take', take)
+        // console.log('skip', skip, 'take', take)
         return await this.postService.getPosts(skip, take);
     }
 
