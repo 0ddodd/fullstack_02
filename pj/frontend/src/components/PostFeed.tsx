@@ -3,7 +3,8 @@ import { postType } from '../gql/graphql'
 import { Link } from 'react-router-dom';
 import { BsMusicNoteBeamed } from 'react-icons/bs';
 import { AiFillHeart } from 'react-icons/ai';
-
+import { IoChatbubbleEllipses } from "react-icons/io5"
+import { IoIosShareAlt } from "react-icons/io"
 
 function PostFeed({post}: {post: PostType}) {
 
@@ -67,6 +68,36 @@ function PostFeed({post}: {post: PostType}) {
                             muted
                             className="rounded-xl object-cover mx-auto h-full"
                         />
+                        <img 
+                            className="absolute right-2 bottom-14"
+                            width="90"
+                            src="src/assets/images/logo-white.png"
+                        />
+                    </div>
+
+                    <div className="relative mr-[75px]">
+                        <div className="absolute bottom-0 pl-2">
+                            <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                                <AiFillHeart size="25" color="black" />
+                            </button>
+                            <span className="text-xs text-gray-800 font-semibold">
+                                {post.likes?.length}
+                            </span>
+                            <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                                <IoIosShareAlt size="25" color="black" />
+                            </button>
+                            <span className="text-xs text-gray-800 font-semitbold">
+                                34
+                            </span>
+                            <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                                <IoChatbubbleEllipses size="25" color="black" />
+                            </button>
+                            {/* <span className="text-xs text-gray-800 font-semitbold">
+                                {" "}
+                                {data?.getCommentsByPostId.length}
+                            </span> */}
+                        </div>
+
                     </div>
                 </div>
             </div>

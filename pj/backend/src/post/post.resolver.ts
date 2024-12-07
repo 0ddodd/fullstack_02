@@ -21,6 +21,7 @@ export class PostResolver {
     ) {
         
         const userId = context.req.user.sub;
+        console.log('userid', userId);
         const videoPath = await this.postService.saveVideo(video);
         const postData = {
             text,
