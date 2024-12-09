@@ -10,6 +10,7 @@ export const GET_COMMENTS_BY_POST_ID = gql`
                 id
                 fullname
                 email
+                image
             }
             post {
                 id

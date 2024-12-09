@@ -53,7 +53,7 @@ function Feed() {
 
     }, [loadMorePosts]);
 
-    // console.log(data?.getPosts)
+    console.log(data?.getPosts)
     
     return (
         <MainLayout>
