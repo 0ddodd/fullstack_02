@@ -381,7 +381,7 @@ function Post() {
                                     </Link>
                                     <div className="ml-14 pt-0.5 w-full">
                                         <div className="text-[18px] font-semibold flex items-center justify-between">
-                                            User name
+                                            {comment.user.fullname ? comment.user.fullname : "anonymous" }
                                             {comment.user.id === Number(loggedInUserId) && (
                                                 <MdOutlineDeleteForever
                                                     onClick={() => handleDeleteComment(comment.id)}
