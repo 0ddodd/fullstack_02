@@ -9,7 +9,7 @@ import { usePostStore } from '../stores/postStore';
 import { useUserStore } from '../stores/userStore';
 import { LIKE_POST } from '../graphql/mutations/LikePost';
 import { GET_POST_BY_ID } from '../graphql/queries/GetPostById';
-import { UNLIKE_POST } from '../graphql/mutations/UnlikePOst';
+import { UNLIKE_POST } from '../graphql/mutations/UnlikePost';
 import { ImCross, ImSpinner2 } from 'react-icons/im';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { AiFillHeart, AiFillPlayCircle } from 'react-icons/ai';
@@ -132,6 +132,7 @@ function Post() {
 
 
     useEffect(() => {
+        console.log('useEffect isLoaded')
         const handleLoadedData = () => {
             console.log("loaded...")
             video.current?.play()
@@ -149,19 +150,21 @@ function Post() {
             videoRef?.pause();
             videoRef.currentTime = 0;
             videoRef?.load();
+            console.log('끝')
         }
-    }, [isLoaded, setIsLoaded]);
+    }, [isLoaded, setIsLoaded, id]);
 
     const [isPlaying, setIsPlaying] = useState(false);
     const toggleVideoPlay = () => {
         if (video.current) {
-            if (!isPlaying) {
+            if (!video.current.paused) {
                 video.current.pause();
+                setIsPlaying(false);
             } else {
                 video.current.play();
+                setIsPlaying(true);
             }
         }
-        setIsPlaying(!isPlaying);
     }
 
     const likedPosts = usePostStore((state) => state.likedPosts);
@@ -215,17 +218,35 @@ function Post() {
             postId: Number(id)
         })
     };
-
-    const isLiked = likedPosts.some((likedPost) => {
-        if (!likedPost) return false;
-        return likedPost.userId === Number(loggedInUserId);
-    })
-
     
+
+// 상태 정의
+const [isLiked, setIsLiked] = useState<boolean>(false);
+// 좋아요 상태 업데이트 (현재 로그인한 사용자와 포스트 좋아요 상태 확인)
+useEffect(() => {
+    console.log('useEffect dataPost, loggedInUserId, isLiked')
+    if (dataPost) {
+        const liked = dataPost.getPostById.likes.some(
+            (like) => like.userId === loggedInUserId
+        );
+
+        // 기존 isLiked와 비교해서 변경이 필요하면 상태를 갱신
+        if (liked !== isLiked) {
+            setIsLiked(liked); // isLiked 상태를 갱신
+        }
+    }
+}, [dataPost, loggedInUserId, isLiked]);  // 의존성 배열에서 isLiked 추가
+    
+    // const isLiked = likedPosts.some((likedPost) => {
+    //     if (!likedPost) return false;
+    //     // console.log(isLiked)
+    //     return likedPost.userId === Number(loggedInUserId);
+    // })
+
     return (
         <div
-            id="Post"
             className="fixed lg:flex justify-between z-50 top-0 left-0 w-full h-full bg-black lg:overflow-hidden overflow-auto"
+            id="PostPage"
         >
             <div className="lg:w-[calc(100%-540px)] h-full relative">
                 <Link
@@ -238,7 +259,7 @@ function Post() {
                     onClick={loopThroughPostsUp}
                     className="absolute z-20 right-4 top-4 flex items-center justify-center rounded-full bg-gray-700 p-1.5 hover:bg-gray-800"
                 >
-                    <BiChevronUp color="#FFFFFF" size="30" />
+                <   BiChevronUp color="#FFFFFF" size="30" />
                 </button>
                 <button
                     onClick={loopThroughPostsDown}
@@ -246,85 +267,73 @@ function Post() {
                 >
                     <BiChevronDown color="#FFFFFF" size="30" />
                 </button>
-            </div>
-    
-            {loadingPost ? (
-                <div className="flex items-center justify-center bg-black bg-opacity-70 h-screen lg:min-w-[400px]">
-                    <ImSpinner2
-                        className="animate-spin ml-1"
-                        size="100"
-                        color="#FFFFFF"
-                    />
-                </div>
-            ) : (
-                <>
-                    <div
-                        className="bg-black bg-opacity-90 lg:min-w-[480px] relative"
-                        onClick={toggleVideoPlay}
-                    >
-                        <video
-                            ref={video}
-                            src={"http://localhost:3000/" + dataPost?.getPostById.video}
-                            loop
-                            muted
-                            className="h-screen mx-auto"
+
+                {loadingPost ? (
+                    <div className="flex items-center justify-center bg-black bg-opacity-70 h-screen lg:min-w-[400px]">
+                        <ImSpinner2
+                            className="animate-spin ml-1"
+                            size="100"
+                            color="#FFFFFF"
                         />
-    
-                        {isPlaying && (
-                            <AiFillPlayCircle
-                                size="100"
-                                className="rounded-full z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black cursor-pointer"
-                            />
-                        )}
                     </div>
-    
-                    <div
-                        className="lg:max-w-[550px] relative w-full h-full bg-white"
-                        id="InfoSection"
-                    >
-                        <div className="py-7" />
-                        <div className="flex items-center justify-between px-8">
-                            <div className="flex items-center">
-                                <Link to="/">
-                                    <img
-                                        className="rounded-full lg:mx-0 mx-auto"
-                                        width="40"
-                                        src={
-                                            dataPost?.getPostById?.user?.image
-                                                ? dataPost.getPostById.user.image
-                                                : "https://picsum.photos/id/237/200/300"
-                                        }
-                                        alt="User"
-                                    />
-                                </Link>
-                                <div className="ml-3 pt-0.5">
-                                    <div className="text-[17px] font-semibold">
-                                        {dataPost?.getPostById?.user?.fullname || "User name"}
-                                    </div>
-                                    <div className="text-[13px] font-light">
-                                        <span>
+                ) : (
+                <div className="bg-black bg-opacity-90 lg:min-w-[480px] relative" onClick={toggleVideoPlay}>
+                    <video
+                        ref={video}
+                        src={"http://localhost:3000/" + dataPost?.getPostById.video}
+                        loop
+                        muted
+                        className="h-screen mx-auto"
+                    />
+                    {/* {isPlaying && (
+                    <AiFillPlayCircle
+                        size="100"
+                        className="rounded-full z-100 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black cursor-pointer"
+                    />
+                    )} */}
+                </div>
+                )}
+            </div>
+
+            {/* InfoSection */}
+            <div
+                className="lg:max-w-[550px] relative w-full h-full bg-white"
+                id="InfoSection"
+            >
+                <div className="py-7" />
+                    <div className="flex items-center justify-between px-8">
+                        <div className="flex items-center">
+                            <Link to="/">
+                                <img
+                                    className="rounded-full lg:mx-0 mx-auto"
+                                    width="40"
+                                    src="https://picsum.photos/id/8/300/320"
+                                />
+                            </Link>
+                            <div className="ml-3 pt-0.5">
+                                <div className="text-[17px] font-semibold">User name</div>
+                                    <div className="text-[13px] -mt-5 font-light">
+                                        {dataPost?.getPostById?.user.fullname}
+                                        <span className="relative top-[6px] text-[30px] pr-0.5">•</span>
+                                        <span className="font-medium">
                                             {new Date(dataPost?.getPostById?.createdAt).toLocaleString()}
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <MdOutlineDeleteForever
-                                size="25"
-                                className="cursor-pointer"
-                                onClick={() => handleDeleteComment(dataPost?.getPostById?.id!)}
-                            />
+                            <MdOutlineDeleteForever size="25" className="cursor-pointer" />
                         </div>
-                        <div className="px-8 mt-4 text-sm">
-                            {dataPost?.getPostById?.text}
-                        </div>
-                        <div className="px-8 mt-3 text-sm font-bold">
+                        <div className="px-8 mt-4 text-sm"> {dataPost?.getPostById?.text}</div>
+                        <div className="px-8 mt-4 text-sm font-bold">
                             <BsMusicNoteBeamed size="17" />
-                            Original sound - {dataPost?.getPostById.user.fullname}
+                            Original sound - username
                         </div>
+
+                        {/* Like & Comments Section */}
                         <div className="flex items-center px-8 mt-8">
                             <div className="pb-4 text-center flex items-center">
                                 <button
-                                    disabled={dataPost?.getPostById?.user.id === loggedInUserId}
+                                    disabled={dataPost?.getPostById?.userId === loggedInUserId}
                                     className="rounded-full bg-gray-200 p-2 cursor-pointer"
                                     onClick={() => (isLiked ? handleRemoveLike() : handleLikePost())}
                                 >
@@ -334,7 +343,6 @@ function Post() {
                                     {dataPost?.getPostById?.likes.length}
                                 </span>
                             </div>
-
                             <div className="pb-4 text-center flex items-center">
                                 <div className="rounded-full bg-gray-200 p-2 cursor-pointer">
                                     <BsFillChatDotsFill size="25" color="black" />
@@ -345,92 +353,82 @@ function Post() {
                             </div>
                         </div>
 
-                        <div
-                            id="Comments"
-                            className="bg-[#F8F8F8] z-0 w-full h-[calc(100%-273px)] border-t-2 overflow-auto"
-                        >
-                            <div className="pt-2" />
-                            {data?.getCommentsByPostId.length === 0 && (
-                                <div className="text-center mt-6 text-xl text-gray-500">
-                                No comments...
-                                </div>
+                {/* Comments */}
+                <div
+                id="Comments"
+                className="bg-[#F8F8F8] z-0 w-full h-[calc(100%-273px)] border-t-2 overflow-auto"
+                >
+                <div className="pt-2" />
+                {data?.getCommentsByPostId.length === 0 && (
+                    <div className="text-center mt-6 text-xl text-gray-500">
+                    No comments...
+                    </div>
+                )}
+                <div className="flex flex-col items-center justify-between px-8 mt-4">
+                    {data?.getCommentsByPostId.map((comment) => (
+                    <div className="flex items-center relative w-full" key={comment.id}>
+                        <Link to="/">
+                        <img
+                            className="absolute top-0 rounded-full lg:mx-0 mx-auto"
+                            width="40"
+                            src="https://picsum.photos/id/8/300/320"
+                        />
+                        </Link>
+                        <div className="ml-14 pt-0.5 w-full">
+                        <div className="text-[18px] font-semibold flex items-center justify-between">
+                            User name
+                            {comment.user.id === Number(loggedInUserId) && (
+                            <MdOutlineDeleteForever
+                                onClick={() => handleDeleteComment(comment.id)}
+                                size="25"
+                                className="cursor-pointer"
+                            />
                             )}
-
-                            <div className="flex flex-col items-center justify-between px-8 mt-4">
-                                {data?.getCommentsByPostId.map((comment) => (
-                                    <div
-                                        className="flex items-center relative w-full"
-                                        key={comment.id}
-                                    >
-                                        <Link to="/">
-                                            <img
-                                                className="absolute top-0 rounded-full lg:mx-0 mx-auto"
-                                                width="40"
-                                                src={
-                                                    comment.user.image
-                                                    ? comment.user.image
-                                                    : "https://picsum.photos/id/237/200/300"
-                                                }
-                                            />
-                                        </Link>
-
-                                        <div className="ml-14 pt-0.5 w-full">
-                                        <div className="text-[18px] font-semibold flex items-center justify-between">
-                                            User name
-                                            {comment.user.id === Number(loggedInUserId) && (
-                                                <MdOutlineDeleteForever
-                                                    onClick={() => handleDeleteComment(comment.id)}
-                                                    size="25"
-                                                    className="cursor-pointer"
-                                                />
-                                            )}
-                                        </div>
-                                        <div className="text-[15px] font-light">{comment.text}</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="mb-28" />
-
                         </div>
-
-                        <div
-                            id="CreateComment"
-                            className="absolute flex items-center justify-between bottom-0 bg-white h-[85px] lg:max-w-[550px] w-full py-5 px-8 border-t-2 "
-                        >
-                            <div
-                                className={[
-                                inputFocussed
-                                    ? "border-2 border-gray-400"
-                                    : "border-2 border-[#F1F1F2]",
-                                "flex items-center rounded-lg w-full lg:max-w-[420px] bg-[#F1F1F2] ",
-                                ].join(" ")}
-                            >
-                                <input
-                                onChange={(e) => setComment(e.target.value)}
-                                onFocus={() => setInputFocussed(true)}
-                                onBlur={() => setInputFocussed(false)}
-                                className="bg-[#F1F1F2] tex-[14px] focus:outline-none w-full lg:max-w-[420px] p-2 rounded-lg"
-                                type="text"
-                                placeholder="Add a comment..."
-                                />
-                            </div>
-                            <button
-                                disabled={!comment}
-                                onClick={addComment}
-                                className={[
-                                comment ? "text-[#F02C56] cursor-pointer" : "text-gray-400",
-                                "font-semibold text-sm ml-5 pr-1",
-                                ].join(" ")}
-                            >
-                                Post
-                            </button>
+                        <div className="text-[15px] font-light">{comment.text}</div>
                         </div>
                     </div>
-                </>
-            )}
-        </div>
+                    ))}
+                </div>
+                <div className="mb-28" />
+                </div>
+
+                {/* Create Comment Section */}
+                <div
+                id="CreateComment"
+                className="absolute flex items-center justify-between bottom-0 bg-white h-[85px] lg:max-w-[550px] w-full py-5 px-8 border-t-2 "
+                >
+                <div
+                    className={[
+                    inputFocussed
+                        ? "border-2 border-gray-400"
+                        : "border-2 border-[#F1F1F2]",
+                    "flex items-center rounded-lg w-full lg:max-w-[420px] bg-[#F1F1F2] ",
+                    ].join(" ")}
+                >
+                    <input
+                        onChange={(e) => setComment(e.target.value)}
+                        onFocus={() => setInputFocussed(true)}
+                        onBlur={() => setInputFocussed(false)}
+                        className="bg-[#F1F1F2] tex-[14px] focus:outline-none w-full lg:max-w-[420px] p-2 rounded-lg"
+                        type="text"
+                        placeholder="Add a comment..."
+                    />
+                </div>
+                <button
+                    disabled={!comment}
+                    onClick={addComment}
+                    className={[
+                        comment ? "text-[#F02C56] cursor-pointer" : "text-gray-400",
+                        "font-semibold text-sm ml-5 pr-1",
+                        ].join(" ")}
+                    >
+                    Post
+                </button>
+                </div>
+            </div>
+            </div>
+
     );
     
     

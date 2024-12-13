@@ -45,6 +45,9 @@ function Feed() {
             observer.observe(loadMoreRef.current)
         };
 
+        console.log('!!!!!!')
+        console.log(data?.getPosts.find(post => post.user.id === 2))
+
         return () => {
             if (loadMoreRef.current) {
                 observer.unobserve(loadMoreRef.current);
