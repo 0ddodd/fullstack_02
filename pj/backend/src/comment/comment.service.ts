@@ -8,19 +8,27 @@ export class CommentService {
     constructor(private readonly prisma: PrismaService) {}
 
     async getCommentsByPostId(postId: number): Promise<Comment[]> {
-        return this.prisma.comment.findMany({
-            where: {
-                postId
-            },
-            include: {
-                user: true,
-                post: true
-            }
-        });
+        try {
+            console.log('get comments service')
+            const comments = await this.prisma.comment.findMany({
+                where: {
+                    postId
+                },
+                include: {
+                    user: true,
+                    post: true
+                }
+            });
+            console.log('✍️')
+            console.log(comments);
+            return comments;
+        } catch (err) {
+            console.log(err)
+        }
     };
 
     async createComment(data: CommentCreateInput): Promise<Comment>{
-        return this.prisma.comment.create({
+        return await this.prisma.comment.create({
             data,
             include: {
                 user: true,

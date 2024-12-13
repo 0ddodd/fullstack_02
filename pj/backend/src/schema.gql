@@ -6,7 +6,7 @@ type Comment {
   createdAt: DateTime!
   id: Int!
   post: PostType!
-  text: Int!
+  text: String!
   updatedAt: DateTime!
   user: User!
 }

@@ -28,7 +28,7 @@ export type Comment = {
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   post: PostType;
-  text: Scalars['Int']['output'];
+  text: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
   user: User;
 };
@@ -197,7 +197,7 @@ export type CreateCommentMutationVariables = Exact<{
 }>;
 
 
-export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: number, text: number, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string }, post: { __typename?: 'PostType', id: number, text: string, video: string } } };
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string }, post: { __typename?: 'PostType', id: number, text: string, video: string } } };
 
 export type CreatePostMutationVariables = Exact<{
   text: Scalars['String']['input'];
@@ -256,7 +256,7 @@ export type GetCommentsByPostIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCommentsByPostIdQuery = { __typename?: 'Query', getCommentsByPostId: Array<{ __typename?: 'Comment', id: number, text: number, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string, image?: string | null }, post: { __typename?: 'PostType', id: number, text: string, video: string } }> };
+export type GetCommentsByPostIdQuery = { __typename?: 'Query', getCommentsByPostId: Array<{ __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string, image?: string | null }, post: { __typename?: 'PostType', id: number, text: string, video: string } }> };
 
 export type GetPostByIdQueryVariables = Exact<{
   id: Scalars['Float']['input'];
@@ -317,7 +317,7 @@ export type Comment = {
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   post: PostType;
-  text: Scalars['Int']['output'];
+  text: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
   user: User;
 };
@@ -486,7 +486,7 @@ export type CreateCommentMutationVariables = Exact<{
 }>;
 
 
-export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: number, text: number, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string }, post: { __typename?: 'PostType', id: number, text: string, video: string } } };
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string }, post: { __typename?: 'PostType', id: number, text: string, video: string } } };
 
 export type CreatePostMutationVariables = Exact<{
   text: Scalars['String']['input'];
@@ -545,7 +545,7 @@ export type GetCommentsByPostIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCommentsByPostIdQuery = { __typename?: 'Query', getCommentsByPostId: Array<{ __typename?: 'Comment', id: number, text: number, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string, image?: string | null }, post: { __typename?: 'PostType', id: number, text: string, video: string } }> };
+export type GetCommentsByPostIdQuery = { __typename?: 'Query', getCommentsByPostId: Array<{ __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string, image?: string | null }, post: { __typename?: 'PostType', id: number, text: string, video: string } }> };
 
 export type GetPostByIdQueryVariables = Exact<{
   id: Scalars['Float']['input'];

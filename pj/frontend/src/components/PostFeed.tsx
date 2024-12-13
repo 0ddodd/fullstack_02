@@ -5,10 +5,12 @@ import { BsMusicNoteBeamed } from 'react-icons/bs';
 import { AiFillHeart } from 'react-icons/ai';
 import { IoChatbubbleEllipses } from "react-icons/io5"
 import { IoIosShareAlt } from "react-icons/io"
+import { useNavigate } from 'react-router-dom';
 
 function PostFeed({post}: {post: PostType}) {
 
     const video = useRef<HTMLVideoElement>(null);
+    const navigate = useNavigate();
     
     // console.log('📼')
     // console.log(post)
@@ -60,7 +62,10 @@ function PostFeed({post}: {post: PostType}) {
                 </div>
 
                 <div className="mt-2.5 flex">
-                    <div className="relative min-h-[480px] max-h-[580px] max-w-[260px] flex items-center bg-black rounded-xl">
+                    <div
+                        className="relative min-h-[480px] max-h-[580px] max-w-[260px] flex items-center bg-black rounded-xl"
+                        onClick={()=>navigate(`post/${post.id}`)}
+                        >
                         <video 
                             ref={video}
                             src={`http://localhost:3000/${post.video}`}

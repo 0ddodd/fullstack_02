@@ -33,8 +33,8 @@ export class GraphqlAuthGuard implements CanActivate {
             const payload = await this.jwtService.verifyAsync(token, {
                 secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
             });
-            console.log('payload')
-            console.log(payload)
+            // console.log('payload')
+            // console.log(payload)
             request['user'] = payload;
 
         } catch (err) {
@@ -47,8 +47,8 @@ export class GraphqlAuthGuard implements CanActivate {
         
     private extractTokenFromCookie(request: Request): string | undefined {
         // console.log(request)
-        console.log('🍪🍪🍪🍪🍪')
-        console.log(request.cookies)
+        // console.log('🍪🍪🍪🍪🍪')
+        // console.log(request.cookies)
         // console.log(request.headers)
         return request.cookies?.access_token;
     }

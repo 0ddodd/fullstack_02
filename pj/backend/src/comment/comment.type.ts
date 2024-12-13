@@ -14,7 +14,7 @@ export class Comment {
     @Field((type) => PostType)
     post: Post;
 
-    @Field((type) => Int)
+    @Field()
     text: string;
 
     @Field()
