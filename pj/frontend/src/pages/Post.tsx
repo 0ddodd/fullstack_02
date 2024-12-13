@@ -312,10 +312,9 @@ function Post() {
                                 />
                             </Link>
                             <div className="ml-3 pt-0.5">
-                                <div className="text-[17px] font-semibold">User name</div>
+                                <div className="text-[17px] font-semibold">{dataPost?.getPostById?.user.fullname ? dataPost?.getPostById?.user.fullname : "anonymous"}</div>
                                     <div className="text-[13px] -mt-5 font-light">
-                                        {dataPost?.getPostById?.user.fullname}
-                                        <span className="relative top-[6px] text-[30px] pr-0.5">•</span>
+                                        <span className="relative top-[6px] text-[30px] pr-0.5"></span>
                                         <span className="font-medium">
                                             {new Date(dataPost?.getPostById?.createdAt).toLocaleString()}
                                         </span>
@@ -326,8 +325,8 @@ function Post() {
                         </div>
                         <div className="px-8 mt-4 text-sm"> {dataPost?.getPostById?.text}</div>
                         <div className="px-8 mt-4 text-sm font-bold">
-                            <BsMusicNoteBeamed size="17" />
-                            Original sound - username
+                            {/* <BsMusicNoteBeamed size="17" />
+                            Original sound - username */}
                         </div>
 
                         {/* Like & Comments Section */}

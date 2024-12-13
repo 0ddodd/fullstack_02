@@ -182,13 +182,13 @@ export type RegisterResponse = {
 export type User = {
   __typename?: 'User';
   bio?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['DateTime']['output'];
-  email: Scalars['String']['output'];
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   fullname: Scalars['String']['output'];
   id: Scalars['Float']['output'];
   image?: Maybe<Scalars['String']['output']>;
-  password: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
+  password?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type CreateCommentMutationVariables = Exact<{
@@ -197,7 +197,7 @@ export type CreateCommentMutationVariables = Exact<{
 }>;
 
 
-export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string }, post: { __typename?: 'PostType', id: number, text: string, video: string } } };
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email?: string | null }, post: { __typename?: 'PostType', id: number, text: string, video: string } } };
 
 export type CreatePostMutationVariables = Exact<{
   text: Scalars['String']['input'];
@@ -227,7 +227,7 @@ export type LoginUserMutationVariables = Exact<{
 }>;
 
 
-export type LoginUserMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', user: { __typename?: 'User', email: string, id: number, fullname: string } } };
+export type LoginUserMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', user: { __typename?: 'User', email?: string | null, id: number, fullname: string } } };
 
 export type LogoutUserMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -242,7 +242,7 @@ export type RegisterUserMutationVariables = Exact<{
 }>;
 
 
-export type RegisterUserMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', user?: { __typename?: 'User', id: number, fullname: string, email: string } | null } };
+export type RegisterUserMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', user?: { __typename?: 'User', id: number, fullname: string, email?: string | null } | null } };
 
 export type UnlikePostMutationVariables = Exact<{
   postId: Scalars['Float']['input'];
@@ -256,14 +256,14 @@ export type GetCommentsByPostIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCommentsByPostIdQuery = { __typename?: 'Query', getCommentsByPostId: Array<{ __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string, image?: string | null }, post: { __typename?: 'PostType', id: number, text: string, video: string } }> };
+export type GetCommentsByPostIdQuery = { __typename?: 'Query', getCommentsByPostId: Array<{ __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email?: string | null, image?: string | null }, post: { __typename?: 'PostType', id: number, text: string, video: string } }> };
 
 export type GetPostByIdQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
 
 
-export type GetPostByIdQuery = { __typename?: 'Query', getPostById: { __typename?: 'PostDetails', id: number, text: string, video: string, createdAt: any, otherPostIds?: Array<number> | null, user: { __typename?: 'User', id: number, email: string, fullname: string }, likes?: Array<{ __typename?: 'LikeType', id: number, userId: number, postId: number }> | null } };
+export type GetPostByIdQuery = { __typename?: 'Query', getPostById: { __typename?: 'PostDetails', id: number, text: string, video: string, createdAt: any, otherPostIds?: Array<number> | null, user: { __typename?: 'User', id: number, email?: string | null, fullname: string }, likes?: Array<{ __typename?: 'LikeType', id: number, userId: number, postId: number }> | null } };
 
 export type GetPostsQueryVariables = Exact<{
   skip: Scalars['Int']['input'];
@@ -271,19 +271,19 @@ export type GetPostsQueryVariables = Exact<{
 }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'PostType', id: number, text: string, video: string, user: { __typename?: 'User', id: number, fullname: string, email: string }, likes?: Array<{ __typename?: 'LikeType', id: number, userId: number, postId: number }> | null }> };
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'PostType', id: number, text: string, video: string, user: { __typename?: 'User', id: number, fullname: string, email?: string | null }, likes?: Array<{ __typename?: 'LikeType', id: number, userId: number, postId: number }> | null }> };
 
 export type GetPostsByUserIdQueryVariables = Exact<{
   userId: Scalars['Float']['input'];
 }>;
 
 
-export type GetPostsByUserIdQuery = { __typename?: 'Query', getPostsByUserId: Array<{ __typename?: 'PostType', id: number, text: string, video: string, user: { __typename?: 'User', fullname: string, email: string, id: number } }> };
+export type GetPostsByUserIdQuery = { __typename?: 'Query', getPostsByUserId: Array<{ __typename?: 'PostType', id: number, text: string, video: string, user: { __typename?: 'User', fullname: string, email?: string | null, id: number } }> };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', id: number, fullname: string, email: string, image?: string | null }> };
+export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', id: number, fullname: string, email?: string | null, image?: string | null }> };
 
 
 export const CreateCommentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateComment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"text"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"postId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createComment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"text"},"value":{"kind":"Variable","name":{"kind":"Name","value":"text"}}},{"kind":"Argument","name":{"kind":"Name","value":"postId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"postId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"fullname"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}},{"kind":"Field","name":{"kind":"Name","value":"post"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"video"}}]}}]}}]}}]} as unknown as DocumentNode<CreateCommentMutation, CreateCommentMutationVariables>;
@@ -471,13 +471,13 @@ export type RegisterResponse = {
 export type User = {
   __typename?: 'User';
   bio?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['DateTime']['output'];
-  email: Scalars['String']['output'];
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   fullname: Scalars['String']['output'];
   id: Scalars['Float']['output'];
   image?: Maybe<Scalars['String']['output']>;
-  password: Scalars['String']['output'];
-  updatedAt: Scalars['DateTime']['output'];
+  password?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type CreateCommentMutationVariables = Exact<{
@@ -486,7 +486,7 @@ export type CreateCommentMutationVariables = Exact<{
 }>;
 
 
-export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string }, post: { __typename?: 'PostType', id: number, text: string, video: string } } };
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email?: string | null }, post: { __typename?: 'PostType', id: number, text: string, video: string } } };
 
 export type CreatePostMutationVariables = Exact<{
   text: Scalars['String']['input'];
@@ -516,7 +516,7 @@ export type LoginUserMutationVariables = Exact<{
 }>;
 
 
-export type LoginUserMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', user: { __typename?: 'User', email: string, id: number, fullname: string } } };
+export type LoginUserMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', user: { __typename?: 'User', email?: string | null, id: number, fullname: string } } };
 
 export type LogoutUserMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -531,7 +531,7 @@ export type RegisterUserMutationVariables = Exact<{
 }>;
 
 
-export type RegisterUserMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', user?: { __typename?: 'User', id: number, fullname: string, email: string } | null } };
+export type RegisterUserMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', user?: { __typename?: 'User', id: number, fullname: string, email?: string | null } | null } };
 
 export type UnlikePostMutationVariables = Exact<{
   postId: Scalars['Float']['input'];
@@ -545,14 +545,14 @@ export type GetCommentsByPostIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCommentsByPostIdQuery = { __typename?: 'Query', getCommentsByPostId: Array<{ __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email: string, image?: string | null }, post: { __typename?: 'PostType', id: number, text: string, video: string } }> };
+export type GetCommentsByPostIdQuery = { __typename?: 'Query', getCommentsByPostId: Array<{ __typename?: 'Comment', id: number, text: string, createdAt: any, user: { __typename?: 'User', id: number, fullname: string, email?: string | null, image?: string | null }, post: { __typename?: 'PostType', id: number, text: string, video: string } }> };
 
 export type GetPostByIdQueryVariables = Exact<{
   id: Scalars['Float']['input'];
 }>;
 
 
-export type GetPostByIdQuery = { __typename?: 'Query', getPostById: { __typename?: 'PostDetails', id: number, text: string, video: string, createdAt: any, otherPostIds?: Array<number> | null, user: { __typename?: 'User', id: number, email: string, fullname: string }, likes?: Array<{ __typename?: 'LikeType', id: number, userId: number, postId: number }> | null } };
+export type GetPostByIdQuery = { __typename?: 'Query', getPostById: { __typename?: 'PostDetails', id: number, text: string, video: string, createdAt: any, otherPostIds?: Array<number> | null, user: { __typename?: 'User', id: number, email?: string | null, fullname: string }, likes?: Array<{ __typename?: 'LikeType', id: number, userId: number, postId: number }> | null } };
 
 export type GetPostsQueryVariables = Exact<{
   skip: Scalars['Int']['input'];
@@ -560,19 +560,19 @@ export type GetPostsQueryVariables = Exact<{
 }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'PostType', id: number, text: string, video: string, user: { __typename?: 'User', id: number, fullname: string, email: string }, likes?: Array<{ __typename?: 'LikeType', id: number, userId: number, postId: number }> | null }> };
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'PostType', id: number, text: string, video: string, user: { __typename?: 'User', id: number, fullname: string, email?: string | null }, likes?: Array<{ __typename?: 'LikeType', id: number, userId: number, postId: number }> | null }> };
 
 export type GetPostsByUserIdQueryVariables = Exact<{
   userId: Scalars['Float']['input'];
 }>;
 
 
-export type GetPostsByUserIdQuery = { __typename?: 'Query', getPostsByUserId: Array<{ __typename?: 'PostType', id: number, text: string, video: string, user: { __typename?: 'User', fullname: string, email: string, id: number } }> };
+export type GetPostsByUserIdQuery = { __typename?: 'Query', getPostsByUserId: Array<{ __typename?: 'PostType', id: number, text: string, video: string, user: { __typename?: 'User', fullname: string, email?: string | null, id: number } }> };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', id: number, fullname: string, email: string, image?: string | null }> };
+export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', id: number, fullname: string, email?: string | null, image?: string | null }> };
 
 
 export const CreateCommentDocument = gql`

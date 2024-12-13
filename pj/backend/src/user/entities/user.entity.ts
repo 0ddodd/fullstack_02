@@ -8,21 +8,21 @@ export class User {
   @Field()
   fullname: string;
 
-  @Field()
+  @Field({ nullable: true })
   email?: string;
 
   @Field({ nullable: true })
   bio?: string;
 
   @Field({ nullable: true })
-  image: string;
+  image?: string;
 
-  @Field()
-  password: string;
+  @Field({ nullable: true })
+  password?: string;
 
-  @Field()
-  createdAt: Date;
+  @Field({ nullable: true })
+  createdAt?: Date;
   
-  @Field()
-  updatedAt: Date;
+  @Field({ nullable: true })
+  updatedAt?: Date;
 }
