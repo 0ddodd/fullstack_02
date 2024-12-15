@@ -41,7 +41,7 @@ function PostProfile({post}: {post:PostType}) {
     return (
         <Link to={`/post/${post.id}`}>
             <div
-                className="relative brightness-90 hover:brightness-[1.4] cursor-pointer"
+                className="relative brightness-90 hover:brightness-[1.3] cursor-pointer"
                 onMouseEnter={() => isHover(true)}
                 onMouseLeave={() => isHover(false)}
             >
