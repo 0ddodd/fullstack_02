@@ -36,7 +36,7 @@ function Profile() {
                     />
                     <div className="ml-5">
                         <div className="text-[30px] font-bold truncate">{user.fullname}</div>
-                        <div className="text-[18px] truncate">{user.fullname}</div>
+                        <div className="text-[18px] truncate">{user.bio}</div>
                         <button
                             onClick={setIsEditProfileOpen}
                             className="flex items-center rounded-md py-1.5 px-3.5 mt-3 text-[15px] font-semibold border hover:bg-gray-100"

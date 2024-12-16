@@ -60,70 +60,46 @@ function EditProfileModal() {
         }
     };
 
-    const updateProfile = async () => {
-        const cropperInstance = cropperRef?.current?.cropper;
-        console.log(cropperInstance)
-        const input: {fullname: string; bio: string; image: File | null} = {
-            fullname: username, 
-            bio,
-            image: null,
-        };
-
-        if (cropperInstance) {
-            cropperInstance.getCroppedCanvas().toBlob(async (blob) => {
-                try {
-                    if (blob) {
-                        input.image = new File([blob], "profile.jpg", { type: "image/jpg "})
-                    };
-
-                    console.log(input)
-                    console.log({...input})
-
-                    const resp = await updateUserProfile({
-                        variables: {
-                            ...input
-                        }
-                    });
-                    console.log(resp);
-
-                    if (resp) {
-                        setUser({
-                            id: Number(resp.data?.updateUserProfile.id),
-                            fullname: username,
-                            bio,
-                            image: resp.data?.updateUserProfile.image 
-                            ? resp.data.updateUserProfile.image 
-                            : 'https://picsum.photos/id/83/300/230'
-                        });
-                        
-                        setIsEditProfileOpen();
-
-                    }
-                } catch (err) {
-                    console.log(err)
-                }
-
-                // return updateUserProfile({
-                //     variables: {
-                //         ...input,
-                //     }
-                // }).then((res) => {
-                //     setUser({
-                //         id: Number(res.data?.updateUserProfile.id),
-                //         fullname: username,
-                //         bio,
-                //         image: res.data?.updateUserProfile.image ? 
-                //         res.data.updateUserProfile.image :
-                //         'https://picsum.photos/id/83/300/230'
-                //     });
-                //     setIsEditProfileOpen()
-                // }).catch((err) => {
-                //     console.log(err);
-                // })
-            })
+    const updateProfileData = async (input: { fullname: string; bio: string; image: File | null }) => {
+        try {
+            const resp = await updateUserProfile({
+                variables: { ...input }
+            });
+    
+            if (resp) {
+                setUser({
+                    id: Number(resp.data?.updateUserProfile.id),
+                    fullname: username,
+                    bio,
+                    image: resp.data?.updateUserProfile.image || user.image || 'https://picsum.photos/id/83/300/230',
+                });
+                setIsEditProfileOpen();
+            }
+        } catch (err) {
+            console.log(err);
         }
     };
-
+    
+    const updateProfile = async () => {
+        const cropperInstance = cropperRef?.current?.cropper;
+        const input: { fullname: string; bio: string; image: File | null } = {
+            fullname: username,
+            bio,
+            image: null, // 기본적으로 null로 설정
+        };
+    
+        if (cropperInstance) {
+            cropperInstance.getCroppedCanvas().toBlob(async (blob) => {
+                if (blob) {
+                    input.image = new File([blob], "profile.jpg", { type: "image/jpg" });
+                }
+                await updateProfileData(input); // 프로필 업데이트
+            });
+        } else {
+            await updateProfileData(input); // 이미지가 없으면 바로 프로필 업데이트
+        }
+    };
+    
     const cropAndUpdateImage = async () => {
         setCroppingDone(false);
         await updateProfile();
