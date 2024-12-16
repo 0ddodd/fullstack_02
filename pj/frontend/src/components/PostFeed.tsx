@@ -12,10 +12,12 @@ function PostFeed({post}: {post: PostType}) {
     const video = useRef<HTMLVideoElement>(null);
     const navigate = useNavigate();
     
-    // console.log('📼')
     // console.log(post)
     
     useEffect(() => {
+        console.log('📼')
+        console.log(post);
+
         if (video.current) {
             video.current
             .play()
@@ -37,28 +39,28 @@ function PostFeed({post}: {post: PostType}) {
                 <div className="flex items-center justify-between pb-0.5">
                     <Link to={`/profile/${post.user.id}`}>
                         <span className='font-bold hover:underline cursor-pointer'>
-                            User name
-                        </span>
-                        <span className='text-[13px] text-light text-gray-500 pl-1 cursor-pointer'>
                             {post.user.fullname}
                         </span>
+                        {/* <span className='text-[13px] text-light text-gray-500 pl-1 cursor-pointer'>
+                            {post.user.fullname}
+                        </span> */}
                     </Link>
 
-                    <button className="border text-[15px] px-[21px] py-.5 border-[#F02C56] text-[#F02C56] hover:bg-[#ffeef2] font-semibold rounded-md">
+                    {/* <button className="border text-[15px] px-[21px] py-.5 border-[#F02C56] text-[#F02C56] hover:bg-[#ffeef2] font-semibold rounded-md">
                         Follow
-                    </button>
+                    </button> */}
                 </div>
 
                 <div className='text-[15px] pb-0.5 break-words md:max-w-[480px] max-w-[300px]'>
-                    This is some text.
+                    {post.text ? post.text : ''}
                 </div>
                 <div className="text-[14px] text-gray-500 pb-0.5">
-                    #super #awesome
+                    {/* #super #awesome */}
                 </div>
                 <div className="text-[14px] pb-0.5 flex itesm-center font-semibold">
-                    <BsMusicNoteBeamed size="17" />
+                    {/* <BsMusicNoteBeamed size="17" />
                     <div className="px-1">original - Awesome </div>
-                    <AiFillHeart size="20" />
+                    <AiFillHeart size="20" /> */}
                 </div>
 
                 <div className="mt-2.5 flex">
@@ -73,16 +75,11 @@ function PostFeed({post}: {post: PostType}) {
                             muted
                             className="rounded-xl object-cover mx-auto h-full"
                         />
-                        <img 
-                            className="absolute right-2 bottom-14"
-                            width="90"
-                            src="src/assets/images/logo-white.png"
-                        />
                     </div>
 
                     <div className="relative mr-[75px]">
                         <div className="absolute bottom-0 pl-2">
-                            <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                            {/* <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
                                 <AiFillHeart size="25" color="black" />
                             </button>
                             <span className="text-xs text-gray-800 font-semibold">
@@ -96,8 +93,8 @@ function PostFeed({post}: {post: PostType}) {
                             </span>
                             <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
                                 <IoChatbubbleEllipses size="25" color="black" />
-                            </button>
-                            {/* <span className="text-xs text-gray-800 font-semitbold">
+                            </button> 
+                            <span className="text-xs text-gray-800 font-semitbold">
                                 {" "}
                                 {data?.getCommentsByPostId.length}
                             </span> */}

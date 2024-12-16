@@ -38,8 +38,9 @@ function Feed() {
                     console.log("Observer triggered");
                     loadMorePosts();
                 }
-            }, { threshold: 1 }
+            }, { threshold: 0.5 }
         );
+        console.log(observer)
 
         if (loadMoreRef.current) {
             observer.observe(loadMoreRef.current)

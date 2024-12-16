@@ -6,6 +6,7 @@ import UploadLayout from '../layouts/UploadLayout';
 import { FiUploadCloud } from "react-icons/fi"
 import { IoCheckmarkDoneCircleOutline } from 'react-icons/io5';
 import { GiBoxCutter } from 'react-icons/gi';
+import { GET_ALL_POSTS } from '../graphql/queries/GetPosts';
 
 function Upload() {
     const [show, setShow] = useState(false);
@@ -36,6 +37,20 @@ function Upload() {
         //     text: caption,
         //     video: fileData
         // }
+        update: (cache, { data }) => {
+            // 새로 업로드된 포스트를 캐시에 추가
+            const newPost = data.createPost;
+    
+            const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 2 } });
+    
+            cache.writeQuery({
+                query: GET_ALL_POSTS,
+                variables: { skip: 0, take: 2 },
+                data: {
+                    getPosts: [newPost, ...existingPosts.getPosts],
+                },
+            });
+        },
     });
 
     const handleCreatePost = async () => {
