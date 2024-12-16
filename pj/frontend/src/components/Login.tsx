@@ -34,11 +34,15 @@ function Login() {
             if (resp?.data?.login.user) {
                 
                 const user = resp.data.login.user;
+                console.log('🧑');
+                console.log(user);
 
                 setUser({
                     id: user.id,
-                    email: user.email,
-                    fullname: user.fullname
+                    email: user.email || '',
+                    fullname: user.fullname,
+                    bio: user.bio || '',
+                    image: user.image || ''
                 });
 
                 setIsLoginOpen(false);
