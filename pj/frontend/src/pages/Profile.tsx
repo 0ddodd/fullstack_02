@@ -1,14 +1,15 @@
 import { useQuery } from '@apollo/client';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { GET_POSTS_BY_USER_ID } from '../graphql/queries/GetPostsByUserId';
-import { GetPostsByUserIdQuery } from '../gql/graphql';
+import { GetPostsByUserIdQuery, GetUsersQuery } from '../gql/graphql';
 import { useUserStore } from '../stores/userStore';
 import MainLayout from '../layouts/MainLayout';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { useGeneralStore } from '../stores/generalStore';
 import { AiFillUnlock } from 'react-icons/ai';
 import PostProfile from '../components/PostProfile';
+import { GET_USERS } from '../graphql/queries/GetUsers';
 
 function Profile() {
 
@@ -19,10 +20,15 @@ function Profile() {
         },
     });
 
+    const { data: dataUsers } = useQuery<GetUsersQuery>(GET_USERS);
+
     const user = useUserStore((state) => state);
     const isEditProfileOpen = useGeneralStore((state) => state.isEditProfileOpen);
     const setIsEditProfileOpen = useGeneralStore((state) => state.setIsEditProfileOpen);
 
+    // useEffect(() => {
+    //     console.log(dataUsers?.getUsers.find(user => user.id === Number(id)))
+    // }, [id]);
 
     return (
         <MainLayout>
@@ -49,7 +55,7 @@ function Profile() {
 
                 <div className="w-full flex items-center pt-2 border-b mb-6">
                     <div className="w-60 text-center py-5 text-[17px] font-semibold border-b-2">
-                        Posts
+                        {dataUsers?.getUsers.find(user => user.id === Number(id))?.fullname}'s Posts
                     </div>
                     <div className="w-60 text-gray-500 text-center py-2 text-[17px] font-semibold">
                         {/* <AiFillUnlock className="mb-0.5" />

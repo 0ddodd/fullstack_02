@@ -11,8 +11,6 @@ function SideNav() {
     const [showAllUsers, setShowAllUsers] = useState(false);
 
     const displayedUsers:User[] = showAllUsers ? data?.getUsers : data?.getUsers.slice(0,3)
-    console.log('sidenavs users data');
-    console.log(data);
 
     return (
         <div

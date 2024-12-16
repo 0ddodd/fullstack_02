@@ -61,15 +61,15 @@ function PostProfile({post}: {post:PostType}) {
                     className="aspect-[3/4] object-cover rounded-md"
                     src={"http://localhost:3000/" + post.video}
                 />
-                <div className="px-1">
+                <div className="px-1 mb-2">
                     <div className="text-gray-700 text-[15px] pt-1 break-words">
                         {post.text}
                     </div>
                     <div className="flex items-center -ml-1 text-gray-600 font-bold text-xs">
-                        <BsFillBarChartFill className="ml-1" size="16"/>
+                        {/* <BsFillBarChartFill className="ml-1" size="16"/>
 
                         <div className="mx-1">3%</div>
-                        <FiAlertCircle size="20" />
+                        <FiAlertCircle size="20" /> */}
                     </div>
                 </div>
             </div>
