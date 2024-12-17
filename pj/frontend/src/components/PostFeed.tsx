@@ -6,17 +6,41 @@ import { AiFillHeart } from 'react-icons/ai';
 import { IoChatbubbleEllipses } from "react-icons/io5"
 import { IoIosShareAlt } from "react-icons/io"
 import { useNavigate } from 'react-router-dom';
+import { MdDelete } from 'react-icons/md';
+import { useUserStore } from '../stores/userStore';
+import { useMutation } from '@apollo/client';
+import { DELETE_POST } from '../graphql/mutations/DeletePost';
+import { GET_ALL_POSTS } from '../graphql/queries/GetPosts';
 
 function PostFeed({post}: {post: PostType}) {
 
     const video = useRef<HTMLVideoElement>(null);
     const navigate = useNavigate();
-    
-    // console.log(post)
-    
+    const [handleDeletePost] = useMutation(DELETE_POST, {
+        update(cache, { data }) {
+            if (data?.deletePost) {
+                cache.modify({
+                    fields: {
+                        getPosts(existingPosts = [], { readField }) {
+                            return existingPosts.filter(
+                                (postRef: any) => readField("id", postRef) !== data.deletePost.id
+                            );
+                        },
+                    },
+                });
+            }
+        },
+    });
+    const userId = useUserStore(state => state.id);
+    const handleDelete = async (postId: number) => {
+        await handleDeletePost({
+            variables: {
+                id: postId
+            }
+        });
+    }
+
     useEffect(() => {
-        console.log('📼')
-        console.log(post);
 
         if (video.current) {
             video.current
@@ -79,6 +103,11 @@ function PostFeed({post}: {post: PostType}) {
 
                     <div className="relative mr-[75px]">
                         <div className="absolute bottom-0 pl-2">
+                            {post.user.id === userId && (
+                                <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                                    <MdDelete onClick={() => handleDelete(post.id)} size="25" color="black" />
+                                </button>
+                            )}
                             {/* <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
                                 <AiFillHeart size="25" color="black" />
                             </button>
@@ -97,7 +126,8 @@ function PostFeed({post}: {post: PostType}) {
                             <span className="text-xs text-gray-800 font-semitbold">
                                 {" "}
                                 {data?.getCommentsByPostId.length}
-                            </span> */}
+                            </span> 
+                            */}
                         </div>
 
                     </div>

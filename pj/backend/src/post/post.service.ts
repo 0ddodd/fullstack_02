@@ -84,18 +84,27 @@ export class PostService {
     })
   };
 
-  async deletePost(id: number): Promise<void> {
-    const post = await this.getPostById(id);
-
+  async deletePost(id: number): Promise<PostType> {
+    
     try {
+      const post = await this.getPostById(id);
+      if (!post) {
+        throw new NotFoundException(`Post with ID ${id} not found.`);
+      }
       const fs = await import('fs');
       fs.unlinkSync(`public${post.video}`);
+
+      const deletedPost = await this.prisma.post.delete({
+        where: {id},
+        include: {user: true}
+      });
+
+      return deletedPost;
       
     } catch (err) {
       throw new NotFoundException(err.message);
     }
     
-    await this.prisma.post.delete({where: {id}});
 
   }
 
