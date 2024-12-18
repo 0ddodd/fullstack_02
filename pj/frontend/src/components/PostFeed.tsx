@@ -53,7 +53,7 @@ function PostFeed({post}: {post: PostType}) {
     }, [])
     
     return (
-        <div id="PostFeed" className="flex border-b py-6">
+        <div id="PostFeed" className="flex border-b py-6 px-16">
             <div className="cursor-pointer">
                 <img className="rounded-full max-h-[60px]"
                     width="60px"

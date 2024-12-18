@@ -305,7 +305,7 @@ function Post() {
                                 <img
                                     className="rounded-full lg:mx-0 mx-auto"
                                     width="40"
-                                    src="https://picsum.photos/id/8/300/320"
+                                    src={dataPost?.getPostById?.user.image ? dataPost?.getPostById?.user.image : "https://picsum.photos/id/8/300/320"}
                                 />
                             </Link>
                             <div className="ml-3 pt-0.5">
