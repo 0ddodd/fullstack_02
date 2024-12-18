@@ -18,6 +18,7 @@ function UpperNav() {
     const setUser = useUserStore((state) => state.setUser);
     const [logoutUser, {loading, error, data}] = useMutation(LOGOUT_USER);
     const location = useLocation();
+    const [showMenu, setShowMenu] = useState(false);
 
     const getURL = () => {
         return window.location.pathname
@@ -41,7 +42,6 @@ function UpperNav() {
         }
     };
 
-    const [showMenu, setShowMenu] = useState(false);
 
     return (
         <div id="UpperNav" className="bg-white fixed z-30 flex items-center w-full boder-b h-[61px]">
@@ -97,8 +97,8 @@ function UpperNav() {
                     </div>}
 
                     <div className="flex items-center">
-                        <BsFillSendFill size="25" color="#161724" />
-                        <BiMessageDetail size="25" color="#161724" />
+                        {/* <BsFillSendFill size="25" color="#161724" />
+                        <BiMessageDetail size="25" color="#161724" /> */}
                         <div className="relative">
                             <button className="mt-1" onClick={() => setShowMenu(!showMenu)}>
                                 <img 
@@ -109,10 +109,10 @@ function UpperNav() {
                             </button>
                             <div
                                 id="PopupMenu"
-                                className="absolute bg-white rounded-lg py-1.5 w-[200px] shadow-xl border top-[43px] -right-2"
+                                className={`${showMenu ? "" : "hidden"} absolute bg-white rounded-lg py-1.5 w-[200px] shadow-xl border top-[43px] -right-2`}
+                                onClick={()=>setShowMenu(!showMenu)}
                             >
                                 <Link 
-                                    onClick={()=>setShowMenu(!showMenu)}
                                     to={`/profile/${user.id}`}
                                     className="flex items-center px-3 py-2 hover:bg-gray-100"
                                 >

@@ -32,6 +32,7 @@ function Feed() {
     };
 
     useEffect(() => {
+        console.log('feed rendering')
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting) {
@@ -40,15 +41,10 @@ function Feed() {
                 }
             }, { threshold: 0.5 }
         );
-        console.log(observer)
 
         if (loadMoreRef.current) {
             observer.observe(loadMoreRef.current)
         };
-
-        console.log('!!!!!!')
-        console.log(data?.getPosts.find(post => post.user.id === 2))
-
         return () => {
             if (loadMoreRef.current) {
                 observer.unobserve(loadMoreRef.current);

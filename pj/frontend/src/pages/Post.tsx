@@ -177,28 +177,70 @@ function Post() {
         onCompleted: (data) => {
             console.log("data", data);
         },
-        refetchQueries: [
-            {
+        update(cache, { data: { likePost } }) {
+            const existingPost = cache.readQuery<GetPostByIdQuery>({
                 query: GET_POST_BY_ID,
-                variables: {
-                    id: Number(id)
-                }
+                variables: { id: Number(id) },
+            });
+    
+            if (existingPost) {
+                const updatedPost = {
+                    ...existingPost.getPostById,
+                    likes: [...existingPost.getPostById.likes, likePost],
+                };
+    
+                cache.writeQuery({
+                    query: GET_POST_BY_ID,
+                    variables: { id: Number(id) },
+                    data: { getPostById: updatedPost },
+                });
             }
-        ]
+        },
+        // refetchQueries: [
+        //     {
+        //         query: GET_POST_BY_ID,
+        //         variables: {
+        //             id: Number(id)
+        //         }
+        //     }
+        // ]
     });
 
     const [removeLikeMutation] = useMutation(UNLIKE_POST, {
         variables: {
             postId: Number(id)
         },
-        refetchQueries: [
-            {
+        update(cache, { data: { unlikePost } }) {
+            const existingPost = cache.readQuery<GetPostByIdQuery>({
                 query: GET_POST_BY_ID,
-                variables: {
-                    id: Number(id)
-                }
+                variables: { id: Number(id) },
+            });
+    
+            if (existingPost) {
+                const updatedLikes = existingPost.getPostById.likes.filter(
+                    (like) => like.id !== unlikePost.id
+                );
+    
+                const updatedPost = {
+                    ...existingPost.getPostById,
+                    likes: updatedLikes,
+                };
+    
+                cache.writeQuery({
+                    query: GET_POST_BY_ID,
+                    variables: { id: Number(id) },
+                    data: { getPostById: updatedPost },
+                });
             }
-        ]
+        },
+        // refetchQueries: [
+        //     {
+        //         query: GET_POST_BY_ID,
+        //         variables: {
+        //             id: Number(id)
+        //         }
+        //     }
+        // ]
     });
 
     const handleRemoveLike = async () => {
