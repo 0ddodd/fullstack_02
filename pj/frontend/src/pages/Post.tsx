@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { CREATE_COMMENT } from '../graphql/mutations/CreateComment';
 import { GET_COMMENTS_BY_POST_ID } from '../graphql/queries/GetCommentsByPostId';
-import { GetCommentsByPostIdQuery, GetPostByIdQuery } from '../gql/graphql';
+import { GetCommentsByPostIdQuery, GetPostByIdQuery, GetPostsQuery } from '../gql/graphql';
 import { DELETE_COMMENT } from '../graphql/mutations/DeleteComment';
 import { usePostStore } from '../stores/postStore';
 import { useUserStore } from '../stores/userStore';
@@ -15,6 +15,7 @@ import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { AiFillHeart, AiFillPlayCircle } from 'react-icons/ai';
 import { MdOutlineDeleteForever } from 'react-icons/md';
 import { BsFillChatDotsFill, BsMusicNoteBeamed } from 'react-icons/bs';
+import { GET_ALL_POSTS } from '../graphql/queries/GetPosts';
 
 function Post() {
 
@@ -85,38 +86,33 @@ function Post() {
         },
     });
 
+    const { data: dataAllPosts } = useQuery<GetPostsQuery>(GET_ALL_POSTS,
+        {
+            variables: {
+                skip:0, take:10
+            }
+        }
+    );
+
+    useEffect(() => {
+        if (dataAllPosts) {
+            const currIndex = dataAllPosts.getPosts.findIndex((post) => post.id === Number(id));
+            setCurrentPostIdIndex(currIndex);
+        }
+    }, [dataAllPosts, id]);
+
     const loopThroughPostsUp = () => {
-        setCurrentPostIdIndex((prevIndex) => {
-            if (prevIndex === dataPost.getPostById.otherPostIds.length - 1) return prevIndex;
-    
-            const nextPostId = dataPost.getPostById.otherPostIds[prevIndex + 1];
-            navigate(`/post/${nextPostId}`);
-    
-            return prevIndex + 1;
-        });
-        // if (currentPostIdIndex === 
-        //     dataPost.getPostById.otherPostIds.length - 1) return;
-        // setCurrentPostIdIndex(currentPostIdIndex + 1);
-        // const nextPostId = dataPost.getPostById.otherPostIds[currentPostIdIndex];
-        // navigate(`/post/${nextPostId}`);
+        if (currentPostIdIndex === 0) return;
+        const nextPostId = dataAllPosts?.getPosts[currentPostIdIndex - 1].id;
+        navigate(`/post/${nextPostId}`);
+        setCurrentPostIdIndex((prevIndex) => prevIndex - 1);
     };
 
     const loopThroughPostsDown = () => {
-        setCurrentPostIdIndex((prevIndex) => {
-            if (prevIndex === 0) return prevIndex;
-    
-            const nextPostId = dataPost.getPostById.otherPostIds[prevIndex - 1];
-            navigate(`/post/${nextPostId}`);
-    
-            return prevIndex - 1;
-        });
-
-        // if (currentPostIdIndex === 0) return;
-        // setCurrentPostIdIndex(currentPostIdIndex - 1)
-
-        // const nextPostId = dataPost.getPostById.otherPostIds[currentPostIdIndex]
-        // console.log(nextPostId)
-        // navigate(`/post/${nextPostId}`);
+        if (currentPostIdIndex === dataAllPosts?.getPosts.length - 1) return;
+        const nextPostId = dataAllPosts?.getPosts[currentPostIdIndex + 1].id;
+        navigate(`/post/${nextPostId}`);
+        setCurrentPostIdIndex((prevIndex) => prevIndex + 1);
     };
 
     const addComment = async () => {
@@ -134,7 +130,6 @@ function Post() {
 
 
     useEffect(() => {
-        console.log('useEffect isLoaded')
         const handleLoadedData = () => {
             console.log("loaded...")
             video.current?.play()
@@ -169,6 +164,7 @@ function Post() {
         }
     }
 
+    // 좋아요
     const likedPosts = usePostStore((state) => state.likedPosts);
     const likePost = usePostStore((state) => state.likePost);
     const removeLike = usePostStore((state) => state.removeLike);
@@ -225,7 +221,6 @@ function Post() {
     const [isLiked, setIsLiked] = useState<boolean>(false);
     // 좋아요 상태 업데이트 (현재 로그인한 사용자와 포스트 좋아요 상태 확인)
     useEffect(() => {
-        console.log('useEffect dataPost, loggedInUserId, isLiked')
         if (dataPost) {
             const liked = dataPost.getPostById.likes.some(
                 (like) => like.userId === loggedInUserId
@@ -237,12 +232,7 @@ function Post() {
             }
         }
     }, [dataPost, loggedInUserId, isLiked]);  // 의존성 배열에서 isLiked 추가
-        
-    // const isLiked = likedPosts.some((likedPost) => {
-    //     if (!likedPost) return false;
-    //     // console.log(isLiked)
-    //     return likedPost.userId === Number(loggedInUserId);
-    // })
+    
 
     return (
         <div
@@ -258,13 +248,20 @@ function Post() {
                 </Link>
                 <button
                     onClick={loopThroughPostsUp}
-                    className="absolute z-20 right-4 top-4 flex items-center justify-center rounded-full bg-gray-700 p-1.5 hover:bg-gray-800"
+                    className={`absolute z-20 right-4 top-4 flex items-center justify-center rounded-full p-1.5 
+                        ${currentPostIdIndex === 0 ? "bg-gray-900" : "bg-gray-700 hover:bg-gray-800" }
+                    `}
+                    disabled={currentPostIdIndex === 0}
                 >
-                <   BiChevronUp color="#FFFFFF" size="30" />
+                    <BiChevronUp color="#FFFFFF" size="30" />
                 </button>
                 <button
                     onClick={loopThroughPostsDown}
-                    className="absolute z-20 right-4 top-20 flex items-center justify-center rounded-full bg-gray-700 p-1.5 hover:bg-gray-800"
+                    className={`absolute z-20 right-4 top-20 flex items-center justify-center rounded-full p-1.5 
+                        ${currentPostIdIndex === dataAllPosts?.getPosts.length - 1 
+                            ? "bg-gray-900" : "bg-gray-700 hover:bg-gray-800"}
+                    `}
+                    disabled={currentPostIdIndex === dataAllPosts?.getPosts.length - 1 }
                 >
                     <BiChevronDown color="#FFFFFF" size="30" />
                 </button>

@@ -16,6 +16,8 @@ function PostFeed({post}: {post: PostType}) {
 
     const video = useRef<HTMLVideoElement>(null);
     const navigate = useNavigate();
+    const userId = useUserStore(state => state.id);
+    
     const [handleDeletePost] = useMutation(DELETE_POST, {
         update(cache, { data }) {
             if (data?.deletePost) {
@@ -31,7 +33,6 @@ function PostFeed({post}: {post: PostType}) {
             }
         },
     });
-    const userId = useUserStore(state => state.id);
     const handleDelete = async (postId: number) => {
         await handleDeletePost({
             variables: {
@@ -104,30 +105,16 @@ function PostFeed({post}: {post: PostType}) {
                     <div className="relative mr-[75px]">
                         <div className="absolute bottom-0 pl-2">
                             {post.user.id === userId && (
-                                <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                                <button className="rounded-full bg-gray-200 p-2 mb-2 cursor-pointer">
                                     <MdDelete onClick={() => handleDelete(post.id)} size="25" color="black" />
                                 </button>
                             )}
-                            {/* <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                            <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
                                 <AiFillHeart size="25" color="black" />
+                                <span onClick={()=>handleLikePost} className="text-xs text-gray-800 font-semibold">
+                                    {post.likes?.length}
+                                </span>
                             </button>
-                            <span className="text-xs text-gray-800 font-semibold">
-                                {post.likes?.length}
-                            </span>
-                            <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
-                                <IoIosShareAlt size="25" color="black" />
-                            </button>
-                            <span className="text-xs text-gray-800 font-semitbold">
-                                34
-                            </span>
-                            <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
-                                <IoChatbubbleEllipses size="25" color="black" />
-                            </button> 
-                            <span className="text-xs text-gray-800 font-semitbold">
-                                {" "}
-                                {data?.getCommentsByPostId.length}
-                            </span> 
-                            */}
                         </div>
 
                     </div>
