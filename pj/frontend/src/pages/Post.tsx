@@ -96,6 +96,9 @@ function Post() {
 
     useEffect(() => {
         if (dataAllPosts) {
+            console.log('📝')
+            console.log(dataAllPosts);
+
             const currIndex = dataAllPosts.getPosts.findIndex((post) => post.id === Number(id));
             setCurrentPostIdIndex(currIndex);
         }
@@ -109,6 +112,10 @@ function Post() {
     };
 
     const loopThroughPostsDown = () => {
+        console.log('currentPostIndex')
+        console.log(currentPostIdIndex);
+        console.log(dataAllPosts?.getPosts.length);
+        
         if (currentPostIdIndex === dataAllPosts?.getPosts.length - 1) return;
         const nextPostId = dataAllPosts?.getPosts[currentPostIdIndex + 1].id;
         navigate(`/post/${nextPostId}`);
@@ -182,7 +189,7 @@ function Post() {
                 query: GET_POST_BY_ID,
                 variables: { id: Number(id) },
             });
-    
+
             if (existingPost) {
                 const updatedPost = {
                     ...existingPost.getPostById,
@@ -193,6 +200,18 @@ function Post() {
                     query: GET_POST_BY_ID,
                     variables: { id: Number(id) },
                     data: { getPostById: updatedPost },
+                });
+
+                    
+                const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 2 } });
+                cache.writeQuery({
+                    query: GET_ALL_POSTS,
+                    variables: { skip: 0, take: 2 },
+                    data: {
+                        getPosts: [
+                            ...existingPosts.getPosts.map(post => post.id === updatedPost.id ? updatedPost : post)
+                        ],
+                    },
                 });
             }
         },
@@ -215,7 +234,7 @@ function Post() {
                 query: GET_POST_BY_ID,
                 variables: { id: Number(id) },
             });
-    
+
             if (existingPost) {
                 const updatedLikes = existingPost.getPostById.likes.filter(
                     (like) => like.id !== unlikePost.id
@@ -231,6 +250,22 @@ function Post() {
                     variables: { id: Number(id) },
                     data: { getPostById: updatedPost },
                 });
+
+
+                const existingPosts = cache.readQuery<GetPostsQuery>({
+                    query: GET_ALL_POSTS,
+                    variables: { skip: 0, take: 2 }
+                });
+                cache.writeQuery({
+                    query: GET_ALL_POSTS,
+                    variables: { skip: 0, take: 2 },
+                    data: {
+                        getPosts: [
+                            ...existingPosts.getPosts.map(post => post.id === updatedPost.id ? updatedPost : post)
+                        ]
+                    }
+                })
+
             }
         },
         // refetchQueries: [
@@ -272,6 +307,9 @@ function Post() {
             if (liked !== isLiked) {
                 setIsLiked(liked); // isLiked 상태를 갱신
             }
+            // console.log('🧑')
+            // console.log(dataPost?.getPostById.user.id)
+            // console.log(loggedInUserId)
         }
     }, [dataPost, loggedInUserId, isLiked]);  // 의존성 배열에서 isLiked 추가
     
@@ -372,8 +410,10 @@ function Post() {
                         <div className="flex items-center px-8 mt-8">
                             <div className="pb-4 text-center flex items-center">
                                 <button
-                                    disabled={dataPost?.getPostById?.userId === loggedInUserId}
-                                    className="rounded-full bg-gray-200 p-2 cursor-pointer"
+                                    disabled={dataPost?.getPostById?.user.id === loggedInUserId}
+                                    className={`rounded-full bg-gray-200 p-2 
+                                        ${dataPost?.getPostById?.user.id === loggedInUserId ? "" : "cursor-pointer"}
+                                    `}
                                     onClick={() => (isLiked ? handleRemoveLike() : handleLikePost())}
                                 >
                                     <AiFillHeart size="25" color={isLiked ? "red" : "black"} />

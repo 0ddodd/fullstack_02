@@ -32,7 +32,9 @@ function Feed() {
     };
 
     useEffect(() => {
-        console.log('feed rendering')
+        console.log('❤️ feed rendering')
+        console.log(data)
+
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting) {
@@ -53,8 +55,6 @@ function Feed() {
 
     }, [loadMorePosts]);
 
-    console.log(data?.getPosts)
-    
     return (
         <MainLayout>
             <div className="pt-[80px] w-[calc(100%-90px) max-w-[690px]">

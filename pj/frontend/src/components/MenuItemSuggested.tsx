@@ -3,7 +3,6 @@ import { User } from '../gql/graphql'
 import { AiOutlineCheck } from 'react-icons/ai'
 
 function MenuItemSuggested({user}: {user:User}) {
-    console.log(user)
     return (
         <div className="flex items-center hover:bg-gray-100 rounded-md w-full py-1.5 px-2">
             <img 
