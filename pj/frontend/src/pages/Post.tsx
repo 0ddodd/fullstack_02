@@ -89,7 +89,7 @@ function Post() {
     const { data: dataAllPosts } = useQuery<GetPostsQuery>(GET_ALL_POSTS,
         {
             variables: {
-                skip:0, take:10
+                skip:0, take: 10
             }
         }
     );
@@ -106,6 +106,7 @@ function Post() {
 
     const loopThroughPostsUp = () => {
         if (currentPostIdIndex === 0) return;
+        // getallpostsㅆ지말고다른방법?????
         const nextPostId = dataAllPosts?.getPosts[currentPostIdIndex - 1].id;
         navigate(`/post/${nextPostId}`);
         setCurrentPostIdIndex((prevIndex) => prevIndex - 1);
@@ -203,10 +204,10 @@ function Post() {
                 });
 
                     
-                const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 2 } });
+                const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 10 } });
                 cache.writeQuery({
                     query: GET_ALL_POSTS,
-                    variables: { skip: 0, take: 2 },
+                    variables: { skip: 0, take: 10 },
                     data: {
                         getPosts: [
                             ...existingPosts.getPosts.map(post => post.id === updatedPost.id ? updatedPost : post)
@@ -254,11 +255,11 @@ function Post() {
 
                 const existingPosts = cache.readQuery<GetPostsQuery>({
                     query: GET_ALL_POSTS,
-                    variables: { skip: 0, take: 2 }
+                    variables: { skip: 0, take: 10 }
                 });
                 cache.writeQuery({
                     query: GET_ALL_POSTS,
-                    variables: { skip: 0, take: 2 },
+                    variables: { skip: 0, take: 10 },
                     data: {
                         getPosts: [
                             ...existingPosts.getPosts.map(post => post.id === updatedPost.id ? updatedPost : post)
@@ -307,9 +308,8 @@ function Post() {
             if (liked !== isLiked) {
                 setIsLiked(liked); // isLiked 상태를 갱신
             }
-            // console.log('🧑')
-            // console.log(dataPost?.getPostById.user.id)
-            // console.log(loggedInUserId)
+            console.log('💚')
+            console.log(dataPost);
         }
     }, [dataPost, loggedInUserId, isLiked]);  // 의존성 배열에서 isLiked 추가
     

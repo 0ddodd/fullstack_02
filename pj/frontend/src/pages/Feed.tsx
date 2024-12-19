@@ -8,7 +8,7 @@ function Feed() {
 
     const loadMoreRef = useRef<HTMLDivElement | null>(null);
     const { data, loading, fetchMore } = useQuery(GET_ALL_POSTS, {
-        variables: { skip: 0, take: 2 }
+        variables: { skip: 0, take: 10 }
     });
 
     const loadMorePosts = async () => {
@@ -16,7 +16,7 @@ function Feed() {
             await fetchMore({
                 variables: {
                     skip: data?.getPosts.length || 0,
-                    take: 2
+                    take: 10
                 },
                 updateQuery: (prev, {fetchMoreResult}) => {
                     if (!fetchMoreResult) return prev;

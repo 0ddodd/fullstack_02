@@ -34,6 +34,7 @@ function PostFeed({post}: {post: PostType}) {
         },
     });
     const handleDelete = async (postId: number) => {
+        console.log('click delete! 🗑️')
         await handleDeletePost({
             variables: {
                 id: postId

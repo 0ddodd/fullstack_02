@@ -41,16 +41,17 @@ function Upload() {
             // 새로 업로드된 포스트를 캐시에 추가
             const newPost = data.createPost;
     
-            const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 2 } });
+            const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 10 } });
     
             cache.writeQuery({
                 query: GET_ALL_POSTS,
-                variables: { skip: 0, take: 2 },
+                variables: { skip: 0, take: 10 },
                 data: {
                     getPosts: [newPost, ...existingPosts.getPosts],
                 },
             });
         },
+        // refetchQueries: [{ query: GET_ALL_POSTS, variables: { skip: 0, take: 10 } }],
     });
 
     const handleCreatePost = async () => {
