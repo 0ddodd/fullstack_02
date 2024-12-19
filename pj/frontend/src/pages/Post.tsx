@@ -16,6 +16,7 @@ import { AiFillHeart, AiFillPlayCircle } from 'react-icons/ai';
 import { MdOutlineDeleteForever } from 'react-icons/md';
 import { BsFillChatDotsFill, BsMusicNoteBeamed } from 'react-icons/bs';
 import { GET_ALL_POSTS } from '../graphql/queries/GetPosts';
+import { DELETE_POST } from '../graphql/mutations/DeletePost';
 
 function Post() {
 
@@ -59,8 +60,8 @@ function Post() {
 
             cache.writeQuery({
                 query: GET_COMMENTS_BY_POST_ID,
-                data: { getCommentsByPostId: newComments },
-                variables: { postId: Number(id) }
+                variables: { postId: Number(id) },
+                data: { getCommentsByPostId: newComments }
             })
         }
     });
@@ -72,6 +73,35 @@ function Post() {
             }
         })
     };
+
+    const [deletePost] = useMutation(DELETE_POST, {
+        update(cache, { data: {deletePost}}) {
+            console.log('deletePost----------');
+            console.log(deletePost);
+
+            const deletedPostId = deletePost.id;
+            const existingPosts = cache.readQuery<GetPostsQuery>({
+                query: GET_ALL_POSTS,
+                variables: { skip: 0, take: 10 }
+            });
+
+            const newPosts = existingPosts?.getPosts.filter((post) => post.id !== deletedPostId);
+            cache.writeQuery({
+                query: GET_ALL_POSTS,
+                variables: { skip: 0, take: 10 },
+                data: { getPosts: newPosts }
+            });
+        }
+    })
+
+    const handleDeletePost = async () => {
+        await deletePost({
+            variables: {
+                id: Number(id)
+            }
+        });
+        navigate('/');
+    }
 
     const [currentPostIdIndex, setCurrentPostIdIndex] = useState(0);
 
@@ -398,7 +428,9 @@ function Post() {
                                     </div>
                                 </div>
                             </div>
-                            <MdOutlineDeleteForever size="25" className="cursor-pointer" />
+                            {dataPost?.getPostById.user.id === loggedInUserId &&
+                                <MdOutlineDeleteForever onClick={handleDeletePost} size="25" className="cursor-pointer" />
+                            }
                         </div>
                         <div className="px-8 mt-4 text-sm"> {dataPost?.getPostById?.text}</div>
                         <div className="px-8 mt-4 text-sm font-bold">

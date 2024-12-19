@@ -48,7 +48,7 @@ export class PostResolver {
 
     @Mutation(() => PostType)
     async deletePost(@Args('id') id: number) {
-        console.log('하이')
+        console.log('erased.')
         return await this.postService.deletePost(id);
     }
 
