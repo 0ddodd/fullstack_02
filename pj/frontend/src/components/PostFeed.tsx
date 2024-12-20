@@ -41,7 +41,6 @@ function PostFeed({post}: {post: PostType}) {
     });
 
     const handleDelete = async (postId: number) => {
-        console.log('click delete! 🗑️')
         await handleDeletePost({
             variables: {
                 id: postId
@@ -99,7 +98,7 @@ function PostFeed({post}: {post: PostType}) {
                     ...existingPost.getPostById,
                     likes: updatedLikes
                 };
-                
+
                 cache.writeQuery({
                     query: GET_POST_BY_ID,
                     variables: { id: post.id },
@@ -113,7 +112,6 @@ function PostFeed({post}: {post: PostType}) {
     const removeLike = usePostStore((state) => state.removeLike);
     
     const handleLikePost = async (id: number) => {
-        console.log('click like in feed!')
         if (loggedInUserId == post.user.id) return;
         await likePostMutation({
             variables: {postId: id}
@@ -126,7 +124,6 @@ function PostFeed({post}: {post: PostType}) {
     };
 
     const handleRemoveLike = async (id: number) => {
-        console.log('unlike!')
         if (loggedInUserId === post.user.id) return;
         await removeLikeMutation({
             variables: { postId: id }
@@ -208,7 +205,9 @@ function PostFeed({post}: {post: PostType}) {
                                     ? handleRemoveLike(post.id)
                                     : handleLikePost(post.id)
                                 }}
-                                className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                                className={`rounded-full bg-gray-200 p-2 ${post.user.id === loggedInUserId ? "" : "cursor-pointer"}`}
+                                disabled={post.user.id === loggedInUserId}
+                            >
                                 <AiFillHeart
                                     size="25"
                                     color={post.likes.find(like => like.userId === loggedInUserId) ? "red" : "black" }
