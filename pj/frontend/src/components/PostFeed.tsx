@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react'
-import { postType } from '../gql/graphql'
+import React, { useEffect, useRef, useState } from 'react'
+import { GetPostsQuery, postType } from '../gql/graphql'
 import { Link } from 'react-router-dom';
 import { BsMusicNoteBeamed } from 'react-icons/bs';
 import { AiFillHeart } from 'react-icons/ai';
@@ -11,13 +11,19 @@ import { useUserStore } from '../stores/userStore';
 import { useMutation } from '@apollo/client';
 import { DELETE_POST } from '../graphql/mutations/DeletePost';
 import { GET_ALL_POSTS } from '../graphql/queries/GetPosts';
+import { LIKE_POST } from '../graphql/mutations/LikePost';
+import { usePostStore } from '../stores/postStore';
+import { GET_POST_BY_ID } from '../graphql/queries/GetPostById';
+import { UNLIKE_POST } from '../graphql/mutations/UnlikePost';
 
 function PostFeed({post}: {post: PostType}) {
 
     const video = useRef<HTMLVideoElement>(null);
     const navigate = useNavigate();
-    const userId = useUserStore(state => state.id);
+    const loggedInUserId = useUserStore(state => state.id);
+    const [isLiked, setIsLiked] = useState(false);
     
+    // 삭제
     const [handleDeletePost] = useMutation(DELETE_POST, {
         update(cache, { data }) {
             if (data?.deletePost) {
@@ -33,6 +39,7 @@ function PostFeed({post}: {post: PostType}) {
             }
         },
     });
+
     const handleDelete = async (postId: number) => {
         console.log('click delete! 🗑️')
         await handleDeletePost({
@@ -40,7 +47,92 @@ function PostFeed({post}: {post: PostType}) {
                 id: postId
             }
         });
-    }
+    };
+
+    // 좋아요
+    const [likePostMutation] = useMutation(LIKE_POST, {
+        refetchQueries: [
+            {
+                query: GET_ALL_POSTS,
+                variables: { skip: 0, take: 10 }
+            }
+        ],
+        update(cache, { data: likePost }) {
+            const existingPost = cache.readQuery({
+                query: GET_POST_BY_ID,
+                variables: { id: post.id }
+            });
+            
+            if (existingPost) {
+                const updatedPost = {
+                    ...existingPost.getPostById,
+                    likes: [...existingPost.getPostById.likes, likePost]
+                };
+    
+                cache.writeQuery({
+                    query: GET_POST_BY_ID,
+                    variables: { id: post.id },
+                    data: {
+                        getPostById: updatedPost
+                    }
+                });
+            };
+        }
+    });
+
+    const [removeLikeMutation] = useMutation(UNLIKE_POST, {
+        refetchQueries: [
+            {
+                query: GET_ALL_POSTS,
+                variables: { skip: 0, take: 10 }
+            }
+        ],
+        update(cache, { data: unlikePost }) {
+            const existingPost = cache.readQuery({
+                query: GET_POST_BY_ID,
+                variables: { id: post.id }
+            });
+
+            if (existingPost) {
+                const updatedLikes = existingPost.getPostById.likes.filter(like => like.id !== unlikePost.id);
+                const updatedPost = {
+                    ...existingPost.getPostById,
+                    likes: updatedLikes
+                };
+                
+                cache.writeQuery({
+                    query: GET_POST_BY_ID,
+                    variables: { id: post.id },
+                    data: { getPostById: updatedPost }
+                });
+            }
+        }
+    });
+
+    const likePost = usePostStore((state => state.likePost));
+    const removeLike = usePostStore((state) => state.removeLike);
+    
+    const handleLikePost = async (id: number) => {
+        console.log('click like in feed!')
+        if (loggedInUserId == post.user.id) return;
+        await likePostMutation({
+            variables: {postId: id}
+        });
+        likePost({
+            id: Number(id),
+            userId: Number(loggedInUserId),
+            postId: Number(id)
+        })
+    };
+
+    const handleRemoveLike = async (id: number) => {
+        console.log('unlike!')
+        if (loggedInUserId === post.user.id) return;
+        await removeLikeMutation({
+            variables: { postId: id }
+        });
+        removeLike(id);
+    };
 
     useEffect(() => {
 
@@ -105,14 +197,23 @@ function PostFeed({post}: {post: PostType}) {
 
                     <div className="relative mr-[75px]">
                         <div className="absolute bottom-0 pl-2">
-                            {post.user.id === userId && (
+                            {post.user.id === loggedInUserId && (
                                 <button className="rounded-full bg-gray-200 p-2 mb-2 cursor-pointer">
                                     <MdDelete onClick={() => handleDelete(post.id)} size="25" color="black" />
                                 </button>
                             )}
-                            <button className="rounded-full bg-gray-200 p-2 cursor-pointer">
-                                <AiFillHeart size="25" color="black" />
-                                <span onClick={()=>handleLikePost} className="text-xs text-gray-800 font-semibold">
+                            <button
+                                onClick={()=> {
+                                    post.likes.find(like => like.userId === loggedInUserId)
+                                    ? handleRemoveLike(post.id)
+                                    : handleLikePost(post.id)
+                                }}
+                                className="rounded-full bg-gray-200 p-2 cursor-pointer">
+                                <AiFillHeart
+                                    size="25"
+                                    color={post.likes.find(like => like.userId === loggedInUserId) ? "red" : "black" }
+                                />
+                                <span className="text-xs text-gray-800 font-semibold">
                                     {post.likes?.length}
                                 </span>
                             </button>
