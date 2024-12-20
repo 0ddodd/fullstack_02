@@ -330,6 +330,8 @@ function Post() {
     // 좋아요 상태 업데이트 (현재 로그인한 사용자와 포스트 좋아요 상태 확인)
     useEffect(() => {
         if (dataPost) {
+            console.log('💚')
+            console.log(dataPost.getPostById.likes)
             const liked = dataPost.getPostById.likes.some(
                 (like) => like.userId === loggedInUserId
             );
@@ -338,8 +340,6 @@ function Post() {
             if (liked !== isLiked) {
                 setIsLiked(liked); // isLiked 상태를 갱신
             }
-            console.log('💚')
-            console.log(dataPost);
         }
     }, [dataPost, loggedInUserId, isLiked]);  // 의존성 배열에서 isLiked 추가
     

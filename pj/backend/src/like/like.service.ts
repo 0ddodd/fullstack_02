@@ -18,6 +18,7 @@ export class LikeService {
         const like = await this.prisma.like.findFirst({
             where: { userId, postId }
         });
+        console.log(like);
 
         if (!like) {
             throw new Error('Like record not found');  // 레코드가 없으면 에러 발생

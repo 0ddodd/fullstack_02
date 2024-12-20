@@ -54,6 +54,10 @@ function PostFeed({post}: {post: PostType}) {
             {
                 query: GET_ALL_POSTS,
                 variables: { skip: 0, take: 10 }
+            },
+            {
+                query: GET_POST_BY_ID,
+                variables: { id: post.id }
             }
         ],
         update(cache, { data: likePost }) {
@@ -84,6 +88,10 @@ function PostFeed({post}: {post: PostType}) {
             {
                 query: GET_ALL_POSTS,
                 variables: { skip: 0, take: 10 }
+            },
+            {
+                query: GET_POST_BY_ID,
+                variables: { id: post.id }
             }
         ],
         update(cache, { data: unlikePost }) {
