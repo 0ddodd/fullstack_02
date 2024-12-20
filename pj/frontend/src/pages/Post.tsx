@@ -110,6 +110,7 @@ function Post() {
     const { data: dataPost, loading: loadingPost } = useQuery<GetPostByIdQuery>(GET_POST_BY_ID, {
         variables: {
             id: Number(id),
+            fetchPolicy: 'cache-first'
         },
         onCompleted: () => {
             setIsLoaded(true)
