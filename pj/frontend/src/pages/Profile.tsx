@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { GET_POSTS_BY_USER_ID } from '../graphql/queries/GetPostsByUserId';
-import { GetPostsByUserIdQuery, GetUsersQuery } from '../gql/graphql';
+import { GetLikedPostsByUserQuery, GetPostsByUserIdQuery, GetPostsQuery, GetUsersQuery } from '../gql/graphql';
 import { useUserStore } from '../stores/userStore';
 import MainLayout from '../layouts/MainLayout';
 import { BsFillPencilFill } from 'react-icons/bs';
@@ -10,6 +10,8 @@ import { useGeneralStore } from '../stores/generalStore';
 import { AiFillUnlock } from 'react-icons/ai';
 import PostProfile from '../components/PostProfile';
 import { GET_USERS } from '../graphql/queries/GetUsers';
+import { GET_ALL_POSTS } from '../graphql/queries/GetPosts';
+import { GET_LIKED_POSTS_BY_USER } from '../graphql/queries/GetLikedPostsByUser';
 
 function Profile() {
 
@@ -19,16 +21,33 @@ function Profile() {
             userId: Number(id),
         },
     });
+    const { data: dataPosts } = useQuery<GetPostsQuery>(GET_ALL_POSTS, {
+        variables: {
+            skip: 0, take: 10
+        }
+    });
 
     const { data: dataUsers } = useQuery<GetUsersQuery>(GET_USERS);
+
+    const { data: dataLikedPostsByUser } = useQuery<GetLikedPostsByUserQuery>(GET_LIKED_POSTS_BY_USER, {
+        variables: {
+            userId: Number(id),
+            fetchPolicy: 'cache-first'
+        }
+    });
 
     const user = useUserStore((state) => state);
     const isEditProfileOpen = useGeneralStore((state) => state.isEditProfileOpen);
     const setIsEditProfileOpen = useGeneralStore((state) => state.setIsEditProfileOpen);
 
-    // useEffect(() => {
-    //     console.log(dataUsers?.getUsers.find(user => user.id === Number(id)))
-    // }, [id]);
+    useEffect(() => {
+        console.log('xxxxxx')
+        console.log(data?.getPostsByUserId)
+        // dataPosts?.getPosts.forEach(post => 
+        //     post.likes.forEach(like => like.userId === user.id && console.log(like))
+        // )
+        console.log(dataLikedPostsByUser)
+    }, [id]);
 
     return (
         <MainLayout>
@@ -60,10 +79,17 @@ function Profile() {
                     <div className="w-60 text-gray-500 text-center py-2 text-[17px] font-semibold">
                         {/* <AiFillUnlock className="mb-0.5" />
                         Liked */}
+                        좋아연
                     </div>
                 </div>
                 <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3">
                     {data?.getPostsByUserId.map((post) => (
+                        <PostProfile key={post.id} post={post} />
+                    ))}
+                </div>
+                <div>---</div>
+                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3">
+                    {dataLikedPostsByUser?.getLikedPostsByUser.map((post) => (
                         <PostProfile key={post.id} post={post} />
                     ))}
                 </div>

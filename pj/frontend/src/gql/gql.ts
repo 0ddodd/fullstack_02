@@ -25,10 +25,11 @@ const documents = {
     "\n    mutation UnlikePost($postId: Float!) {\n        unlikePost(postId: $postId) {\n            id\n            userId\n            postId\n        }\n    }\n": types.UnlikePostDocument,
     "\n    mutation UpdateUserProfile (\n        $fullname: String!\n        $bio: String!\n        $image: Upload\n    ) {\n        updateUserProfile (fullname: $fullname, bio: $bio, image: $image) {\n            id\n            fullname\n            bio\n            image\n        }\n    }\n": types.UpdateUserProfileDocument,
     "\n    query GetCommentsByPostId($postId: Float!) {\n        getCommentsByPostId(postId: $postId) {\n            id\n            text\n            createdAt\n            user {\n                id\n                fullname\n                email\n                image\n            }\n            post {\n                id\n                text\n                video\n            }\n        }\n    }\n": types.GetCommentsByPostIdDocument,
+    "\n    query GetLikedPostsByUser ($userId: Float!) {\n        getLikedPostsByUser (userId: $userId) {\n            id\n            text\n            video\n        }\n    } \n": types.GetLikedPostsByUserDocument,
     "\n    query GetPostById($id: Float!) {\n        getPostById(id: $id) {\n            id\n            text\n            video\n            createdAt\n            user {\n                id\n                email\n                fullname\n                image\n            }\n            likes {\n                id\n                userId\n                postId\n            }\n            otherPostIds\n        }\n    }\n": types.GetPostByIdDocument,
     "\n    query GetPosts($skip: Int!, $take: Int!) {\n        getPosts(skip: $skip, take: $take) {\n            id\n            text\n            video\n            user {\n                id\n                fullname\n                email\n                image\n            }\n            likes {\n                id\n                userId\n                postId\n            }\n        }\n    }\n": types.GetPostsDocument,
     "\n    query getPostsByUserId($userId: Float!) {\n        getPostsByUserId(userId: $userId) {\n            id\n            text\n            video\n            user {\n                fullname\n                email\n                id\n            }\n        }\n    }\n": types.GetPostsByUserIdDocument,
-    "\n    query GetUsers {\n        getUsers {\n            id\n            fullname\n            email\n            image\n        }\n    } \n": types.GetUsersDocument,
+    "\n    query GetUsers {\n        getUsers {\n            id\n            fullname\n            email\n            image\n            bio\n        }\n    } \n": types.GetUsersDocument,
 };
 
 /**
@@ -92,6 +93,10 @@ export function graphql(source: "\n    query GetCommentsByPostId($postId: Float!
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n    query GetLikedPostsByUser ($userId: Float!) {\n        getLikedPostsByUser (userId: $userId) {\n            id\n            text\n            video\n        }\n    } \n"): (typeof documents)["\n    query GetLikedPostsByUser ($userId: Float!) {\n        getLikedPostsByUser (userId: $userId) {\n            id\n            text\n            video\n        }\n    } \n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n    query GetPostById($id: Float!) {\n        getPostById(id: $id) {\n            id\n            text\n            video\n            createdAt\n            user {\n                id\n                email\n                fullname\n                image\n            }\n            likes {\n                id\n                userId\n                postId\n            }\n            otherPostIds\n        }\n    }\n"): (typeof documents)["\n    query GetPostById($id: Float!) {\n        getPostById(id: $id) {\n            id\n            text\n            video\n            createdAt\n            user {\n                id\n                email\n                fullname\n                image\n            }\n            likes {\n                id\n                userId\n                postId\n            }\n            otherPostIds\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -104,7 +109,7 @@ export function graphql(source: "\n    query getPostsByUserId($userId: Float!) {
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query GetUsers {\n        getUsers {\n            id\n            fullname\n            email\n            image\n        }\n    } \n"): (typeof documents)["\n    query GetUsers {\n        getUsers {\n            id\n            fullname\n            email\n            image\n        }\n    } \n"];
+export function graphql(source: "\n    query GetUsers {\n        getUsers {\n            id\n            fullname\n            email\n            image\n            bio\n        }\n    } \n"): (typeof documents)["\n    query GetUsers {\n        getUsers {\n            id\n            fullname\n            email\n            image\n            bio\n        }\n    } \n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

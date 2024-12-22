@@ -15,6 +15,7 @@ import { LIKE_POST } from '../graphql/mutations/LikePost';
 import { usePostStore } from '../stores/postStore';
 import { GET_POST_BY_ID } from '../graphql/queries/GetPostById';
 import { UNLIKE_POST } from '../graphql/mutations/UnlikePost';
+import { GET_LIKED_POSTS_BY_USER } from '../graphql/queries/GetLikedPostsByUser';
 
 function PostFeed({post}: {post: PostType}) {
 
@@ -112,7 +113,14 @@ function PostFeed({post}: {post: PostType}) {
                     variables: { id: post.id },
                     data: { getPostById: updatedPost }
                 });
-            }
+            };
+
+            const likedPostsByUser = cache.readQuery({
+                variables: Number(loggedInUserId),
+                query: GET_LIKED_POSTS_BY_USER
+            });
+
+            
         }
     });
 

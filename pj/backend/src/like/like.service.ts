@@ -29,4 +29,17 @@ export class LikeService {
         })
     };
 
+    async getLikedPostsByUser(userId: number) {
+        const likedPosts = await this.prisma.like.findMany({
+            where: { userId },
+            include: {
+                post: true
+            }
+        })
+        console.log('--------likedPosts--------')
+        console.log(likedPosts)
+
+        return likedPosts.map(like => like.post);
+    }
+
 }

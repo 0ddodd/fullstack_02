@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { PostType } from "src/post/post.type";
 
 @ObjectType()
 export class LikeType {

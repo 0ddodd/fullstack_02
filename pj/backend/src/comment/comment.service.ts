@@ -19,8 +19,8 @@ export class CommentService {
                     post: true
                 }
             });
-            console.log('✍️')
-            console.log(comments);
+            // console.log('✍️')
+            // console.log(comments);
             return comments;
         } catch (err) {
             console.log(err)
