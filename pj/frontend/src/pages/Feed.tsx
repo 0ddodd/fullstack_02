@@ -32,8 +32,8 @@ function Feed() {
     };
 
     useEffect(() => {
-        console.log('❤️ feed rendering')
-        console.log(data)
+        // console.log('❤️ feed rendering')
+        // console.log(data)
 
         const observer = new IntersectionObserver(
             (entries) => {

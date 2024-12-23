@@ -56,10 +56,10 @@ function PostFeed({post}: {post: PostType}) {
                 query: GET_ALL_POSTS,
                 variables: { skip: 0, take: 10 }
             },
-            // {
-            //     query: GET_POST_BY_ID,
-            //     variables: { id: post.id }
-            // }
+            {
+                query: GET_LIKED_POSTS_BY_USER,
+                variables: { userId: Number(loggedInUserId) }
+            }
         ],
         update(cache, { data: likePost }) {
             const existingPost = cache.readQuery({
@@ -72,6 +72,8 @@ function PostFeed({post}: {post: PostType}) {
                     ...existingPost.getPostById,
                     likes: [...existingPost.getPostById.likes, likePost]
                 };
+                console.log('🆕')
+                console.log(updatedPost);
     
                 cache.writeQuery({
                     query: GET_POST_BY_ID,
@@ -81,6 +83,8 @@ function PostFeed({post}: {post: PostType}) {
                     }
                 });
             };
+
+
         }
     });
 
@@ -90,9 +94,13 @@ function PostFeed({post}: {post: PostType}) {
                 query: GET_ALL_POSTS,
                 variables: { skip: 0, take: 10 }
             },
+            // {
+            //     query: GET_POST_BY_ID,
+            //     variables: { id: post.id }
+            // },
             {
-                query: GET_POST_BY_ID,
-                variables: { id: post.id }
+                query: GET_LIKED_POSTS_BY_USER,
+                variables: { userId: Number(loggedInUserId) }
             }
         ],
         update(cache, { data: unlikePost }) {
@@ -113,12 +121,9 @@ function PostFeed({post}: {post: PostType}) {
                     variables: { id: post.id },
                     data: { getPostById: updatedPost }
                 });
+                
             };
 
-            const likedPostsByUser = cache.readQuery({
-                variables: Number(loggedInUserId),
-                query: GET_LIKED_POSTS_BY_USER
-            });
 
             
         }

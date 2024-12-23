@@ -32,8 +32,8 @@ function Profile() {
     const { data: dataLikedPostsByUser } = useQuery<GetLikedPostsByUserQuery>(GET_LIKED_POSTS_BY_USER, {
         variables: {
             userId: Number(id),
-            fetchPolicy: 'cache-first'
-        }
+            // fetchPolicy: 'cache-first'
+        },
     });
 
     const user = useUserStore((state) => state);
@@ -41,13 +41,14 @@ function Profile() {
     const setIsEditProfileOpen = useGeneralStore((state) => state.setIsEditProfileOpen);
 
     useEffect(() => {
-        console.log('xxxxxx')
-        console.log(data?.getPostsByUserId)
-        // dataPosts?.getPosts.forEach(post => 
-        //     post.likes.forEach(like => like.userId === user.id && console.log(like))
-        // )
-        console.log(dataLikedPostsByUser)
-    }, [id]);
+        // console.log('xxxxxx')
+        // console.log(data?.getPostsByUserId)
+        // // dataPosts?.getPosts.forEach(post => 
+        // //     post.likes.forEach(like => like.userId === user.id && console.log(like))
+        // // )
+        // console.log(dataLikedPostsByUser)
+        console.log("좋아요 상태 바뀜")
+    }, [dataLikedPostsByUser]);
 
     return (
         <MainLayout>

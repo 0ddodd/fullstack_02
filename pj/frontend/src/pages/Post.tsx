@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { CREATE_COMMENT } from '../graphql/mutations/CreateComment';
 import { GET_COMMENTS_BY_POST_ID } from '../graphql/queries/GetCommentsByPostId';
-import { GetCommentsByPostIdQuery, GetPostByIdQuery, GetPostsQuery } from '../gql/graphql';
+import { GetCommentsByPostIdQuery, GetLikedPostsByUserQuery, GetPostByIdQuery, GetPostsQuery } from '../gql/graphql';
 import { DELETE_COMMENT } from '../graphql/mutations/DeleteComment';
 import { usePostStore } from '../stores/postStore';
 import { useUserStore } from '../stores/userStore';
@@ -17,6 +17,7 @@ import { MdOutlineDeleteForever } from 'react-icons/md';
 import { BsFillChatDotsFill, BsMusicNoteBeamed } from 'react-icons/bs';
 import { GET_ALL_POSTS } from '../graphql/queries/GetPosts';
 import { DELETE_POST } from '../graphql/mutations/DeletePost';
+import { GET_LIKED_POSTS_BY_USER } from '../graphql/queries/GetLikedPostsByUser';
 
 function Post() {
 
@@ -247,14 +248,18 @@ function Post() {
                 });
             }
         },
-        // refetchQueries: [
+        refetchQueries: [
         //     {
         //         query: GET_POST_BY_ID,
         //         variables: {
         //             id: Number(id)
         //         }
-        //     }
-        // ]
+        //     },
+            {
+                query: GET_LIKED_POSTS_BY_USER,
+                variables: { userId: Number(loggedInUserId) }
+            }
+        ]
     });
 
     const [removeLikeMutation] = useMutation(UNLIKE_POST, {
@@ -268,6 +273,7 @@ function Post() {
             });
 
             if (existingPost) {
+                // specific post
                 const updatedLikes = existingPost.getPostById.likes.filter(
                     (like) => like.id !== unlikePost.id
                 );
@@ -284,6 +290,7 @@ function Post() {
                 });
 
 
+                // posts list
                 const existingPosts = cache.readQuery<GetPostsQuery>({
                     query: GET_ALL_POSTS,
                     variables: { skip: 0, take: 10 }
@@ -297,17 +304,14 @@ function Post() {
                         ]
                     }
                 })
-
             }
         },
-        // refetchQueries: [
-        //     {
-        //         query: GET_POST_BY_ID,
-        //         variables: {
-        //             id: Number(id)
-        //         }
-        //     }
-        // ]
+        refetchQueries: [
+            {
+                query: GET_LIKED_POSTS_BY_USER,
+                variables: { userId: Number(loggedInUserId) }
+            }
+        ]
     });
 
     const handleRemoveLike = async () => {
@@ -352,7 +356,7 @@ function Post() {
         >
             <div className="lg:w-[calc(100%-540px)] h-full relative">
                 <Link
-                    to="/"
+                    to={`/profile/${loggedInUserId}`}
                     className="absolute z-20 m-5 rounded-full hover:bg-gray-800 bg-gray-700 p-1.5"
                 >
                     <ImCross color="#FFFFFF" size="27" />
