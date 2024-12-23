@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useRef, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { CREATE_COMMENT } from '../graphql/mutations/CreateComment';
 import { GET_COMMENTS_BY_POST_ID } from '../graphql/queries/GetCommentsByPostId';
 import { GetCommentsByPostIdQuery, GetLikedPostsByUserQuery, GetPostByIdQuery, GetPostsQuery } from '../gql/graphql';
@@ -25,9 +25,10 @@ function Post() {
 
     const { id } = useParams<{id: string}>();
     const [comment, setComment] = useState<string>("");
-    const navigate = useNavigate();
     const loggedInUserId = useUserStore((state) => state.id);
     const searchKeyword = useGeneralStore((state) => state.searchKeyword);
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const [createComment, { data: commentData }] = useMutation(CREATE_COMMENT, {
         refetchQueries: [
@@ -355,7 +356,10 @@ function Post() {
     
 
     // path
-    // useEffect(() => {}, [location.pathname]);
+    useEffect(() => {
+        console.log('🚩')
+        console.log(location);
+    }, [location.pathname]);
 
     return (
         <div
@@ -364,7 +368,7 @@ function Post() {
         >
             <div className="lg:w-[calc(100%-540px)] h-full relative">
                 <Link
-                    to={`/profile/${loggedInUserId}`}
+                    to={location.state?.from === "/" ? "/" :`/profile/${loggedInUserId}`}
                     className="absolute z-20 m-5 rounded-full hover:bg-gray-800 bg-gray-700 p-1.5"
                 >
                     <ImCross color="#FFFFFF" size="27" />

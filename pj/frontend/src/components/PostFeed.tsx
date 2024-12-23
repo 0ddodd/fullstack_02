@@ -206,7 +206,7 @@ function PostFeed({post}: {post: PostType}) {
                 <div className="mt-2.5 flex">
                     <div
                         className="relative min-h-[480px] max-h-[580px] max-w-[260px] flex items-center bg-black rounded-xl"
-                        onClick={()=>navigate(`post/${post.id}`)}
+                        onClick={()=>navigate(`post/${post.id}`, {state: {from: '/'}})}
                         >
                         <video 
                             ref={video}

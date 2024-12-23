@@ -39,7 +39,7 @@ function PostProfile({post}: {post:PostType}) {
 
 
     return (
-        <Link to={`/post/${post.id}`}>
+        <Link to={`/post/${post.id}`} state={{from: `/post/${post.id}`}}>
             <div
                 className="relative brightness-90 hover:brightness-[1.3] cursor-pointer"
                 onMouseEnter={() => isHover(true)}

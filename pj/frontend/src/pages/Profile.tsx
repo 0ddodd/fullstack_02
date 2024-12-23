@@ -21,11 +21,6 @@ function Profile() {
             userId: Number(id),
         },
     });
-    const { data: dataPosts } = useQuery<GetPostsQuery>(GET_ALL_POSTS, {
-        variables: {
-            skip: 0, take: 10
-        }
-    });
 
     const { data: dataUsers } = useQuery<GetUsersQuery>(GET_USERS);
 
@@ -39,16 +34,6 @@ function Profile() {
     const user = useUserStore((state) => state);
     const isEditProfileOpen = useGeneralStore((state) => state.isEditProfileOpen);
     const setIsEditProfileOpen = useGeneralStore((state) => state.setIsEditProfileOpen);
-
-    useEffect(() => {
-        // console.log('xxxxxx')
-        // console.log(data?.getPostsByUserId)
-        // // dataPosts?.getPosts.forEach(post => 
-        // //     post.likes.forEach(like => like.userId === user.id && console.log(like))
-        // // )
-        // console.log(dataLikedPostsByUser)
-        console.log("좋아요 상태 바뀜")
-    }, [dataLikedPostsByUser]);
 
     return (
         <MainLayout>
