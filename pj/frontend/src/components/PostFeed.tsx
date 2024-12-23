@@ -61,6 +61,10 @@ function PostFeed({post}: {post: PostType}) {
                 variables: { skip: 0, take: 10 }
             },
             {
+                query: GET_POST_BY_ID,
+                variables: { id: post.id }
+            },
+            {
                 query: GET_LIKED_POSTS_BY_USER,
                 variables: { userId: Number(loggedInUserId) }
             }
@@ -98,10 +102,10 @@ function PostFeed({post}: {post: PostType}) {
                 query: GET_ALL_POSTS,
                 variables: { skip: 0, take: 10 }
             },
-            // {
-            //     query: GET_POST_BY_ID,
-            //     variables: { id: post.id }
-            // },
+            {
+                query: GET_POST_BY_ID,
+                variables: { id: post.id }
+            },
             {
                 query: GET_LIKED_POSTS_BY_USER,
                 variables: { userId: Number(loggedInUserId) }
