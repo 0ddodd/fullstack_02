@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { GET_POSTS_BY_USER_ID } from '../graphql/queries/GetPostsByUserId';
 import { GetLikedPostsByUserQuery, GetPostsByUserIdQuery, GetPostsQuery, GetUsersQuery } from '../gql/graphql';
@@ -15,7 +15,12 @@ import { GET_LIKED_POSTS_BY_USER } from '../graphql/queries/GetLikedPostsByUser'
 
 function Profile() {
 
-    const {id} = useParams<{id: string}>();
+    const {id} = useParams<{id: string}>();    
+    const user = useUserStore((state) => state);
+    const isEditProfileOpen = useGeneralStore((state) => state.isEditProfileOpen);
+    const setIsEditProfileOpen = useGeneralStore((state) => state.setIsEditProfileOpen);
+    const [showPosts, setShowPosts] = useState(true);
+
     const { data, loading, error } = useQuery<GetPostsByUserIdQuery>(GET_POSTS_BY_USER_ID, {
         variables: {
             userId: Number(id),
@@ -30,10 +35,6 @@ function Profile() {
             // fetchPolicy: 'cache-first'
         },
     });
-
-    const user = useUserStore((state) => state);
-    const isEditProfileOpen = useGeneralStore((state) => state.isEditProfileOpen);
-    const setIsEditProfileOpen = useGeneralStore((state) => state.setIsEditProfileOpen);
 
     return (
         <MainLayout>
@@ -58,27 +59,35 @@ function Profile() {
                     </div>
                 </div>
 
-                <div className="w-full flex items-center pt-2 border-b mb-6">
-                    <div className="w-60 text-center py-5 text-[17px] font-semibold border-b-2">
+                <div className="w-full flex items-center pt-2 mb-6">
+                    <div 
+                        onClick={()=>setShowPosts(prev => !prev)}
+                        className={`w-60 text-center font-semibold text-[17px] cursor-pointer
+                            ${showPosts ? `py-5 border-b-2` : `text-gray-500 py-2`}`
+                        }>
                         {dataUsers?.getUsers.find(user => user.id === Number(id))?.fullname}'s Posts
                     </div>
-                    <div className="w-60 text-gray-500 text-center py-2 text-[17px] font-semibold">
-                        {/* <AiFillUnlock className="mb-0.5" />
-                        Liked */}
-                        좋아연
+                    <div
+                        onClick={()=>setShowPosts(prev => !prev)}
+                        className={`w-60 text-center font-semibold text-[17px] cursor-pointer
+                            ${showPosts ? `text-gray-500 py-2` : `py-5 border-b-2`}`
+                        }>
+                        현재로그인한유저가좋아요누름
                     </div>
                 </div>
-                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3">
-                    {data?.getPostsByUserId.map((post) => (
-                        <PostProfile key={post.id} post={post} />
-                    ))}
-                </div>
-                <div>---</div>
-                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3">
-                    {dataLikedPostsByUser?.getLikedPostsByUser.map((post) => (
-                        <PostProfile key={post.id} post={post} />
-                    ))}
-                </div>
+                {showPosts ? 
+                    <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3">
+                        {data?.getPostsByUserId.map((post) => (
+                            <PostProfile key={post.id} post={post} />
+                        ))}
+                    </div>
+                :
+                    <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3">
+                        {dataLikedPostsByUser?.getLikedPostsByUser.map((post) => (
+                            <PostProfile key={post.id} post={post} />
+                        ))}
+                    </div>
+                }
             </div>
         </MainLayout>
     );
