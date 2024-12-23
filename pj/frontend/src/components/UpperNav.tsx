@@ -19,10 +19,18 @@ function UpperNav() {
     const [logoutUser, {loading, error, data}] = useMutation(LOGOUT_USER);
     const location = useLocation();
     const [showMenu, setShowMenu] = useState(false);
+    const [keyword, setKeyword] = useState("");
+    const setSearchKeyword = useGeneralStore((state) => state.setSearchKeyword);
 
     const getURL = () => {
         return window.location.pathname
     };
+
+    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            setSearchKeyword(keyword);
+        }
+    } 
     
     const handleLogout = async () => {
         try {
@@ -65,7 +73,9 @@ function UpperNav() {
                 <div className="hidden md:flex items-center bg-[#F1F1F1] p-1 rounded-full max-w-[380px] w-full">
                     <input 
                         type="text"
-                        placeholder="Search accounts"
+                        onKeyDown={handleSearch}
+                        onChange={(e) => setKeyword(e.target.value)}
+                        placeholder="Search"
                         className="w-full pl-3 my-2 bg-transparent placeholder-[#838383] text-[15px] focus:outline-none"
                     />
                     <div className="px-3 py-1 flex items-center border-l border-l-gray-3">

@@ -76,9 +76,10 @@ type Query {
   getCommentsByPostId(postId: Float!): [Comment!]!
   getLikedPostsByUser(userId: Float!): [PostType!]!
   getPostById(id: Float!): PostDetails!
-  getPosts(skip: Int! = 0, take: Int! = 1): [PostType!]!
+  getPosts(keyword: String, skip: Int! = 0, take: Int! = 1): [PostType!]!
   getPostsByUserId(userId: Float!): [PostType!]!
   getUsers: [User!]!
+  searchPosts(keyword: String!): [PostType!]!
 }
 
 input RegisterDto {

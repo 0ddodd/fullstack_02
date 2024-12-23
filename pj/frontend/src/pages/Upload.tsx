@@ -7,6 +7,8 @@ import { FiUploadCloud } from "react-icons/fi"
 import { IoCheckmarkDoneCircleOutline } from 'react-icons/io5';
 import { GiBoxCutter } from 'react-icons/gi';
 import { GET_ALL_POSTS } from '../graphql/queries/GetPosts';
+import { GET_POSTS_BY_USER_ID } from '../graphql/queries/GetPostsByUserId';
+import { useUserStore } from '../stores/userStore';
 
 function Upload() {
     const [show, setShow] = useState(false);
@@ -17,6 +19,7 @@ function Upload() {
     const [isUploading, setIsUploading] = useState(false);
     const [file, setFile] = useState<File | null>(null);
     const [caption, setCaption] = useState("");
+    const loggedInUserId = useUserStore((state) => state.id);
 
     const fileRef = useRef<HTMLInputElement>(null);
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +54,10 @@ function Upload() {
                 },
             });
         },
-        // refetchQueries: [{ query: GET_ALL_POSTS, variables: { skip: 0, take: 10 } }],
+        refetchQueries: [
+            { query: GET_ALL_POSTS, variables: { skip: 0, take: 10, keyword: "" }},
+            { query: GET_POSTS_BY_USER_ID, variables: { userId: loggedInUserId } },        
+        ],
     });
 
     const handleCreatePost = async () => {

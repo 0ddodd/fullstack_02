@@ -18,12 +18,16 @@ import { BsFillChatDotsFill, BsMusicNoteBeamed } from 'react-icons/bs';
 import { GET_ALL_POSTS } from '../graphql/queries/GetPosts';
 import { DELETE_POST } from '../graphql/mutations/DeletePost';
 import { GET_LIKED_POSTS_BY_USER } from '../graphql/queries/GetLikedPostsByUser';
+import { GET_POSTS_BY_USER_ID } from '../graphql/queries/GetPostsByUserId';
+import { useGeneralStore } from '../stores/generalStore';
 
 function Post() {
 
     const { id } = useParams<{id: string}>();
     const [comment, setComment] = useState<string>("");
     const navigate = useNavigate();
+    const loggedInUserId = useUserStore((state) => state.id);
+    const searchKeyword = useGeneralStore((state) => state.searchKeyword);
 
     const [createComment, { data: commentData }] = useMutation(CREATE_COMMENT, {
         refetchQueries: [
@@ -47,7 +51,8 @@ function Post() {
             onError: (err) =>  console.error(err)
         },
     );
-
+    
+    // 코멘트 삭제
     const [deleteComment] = useMutation(DELETE_COMMENT, {
         update(cache, { data: { deleteComment }}) {
             const deletedCommentId = deleteComment.id;
@@ -75,6 +80,7 @@ function Post() {
         })
     };
 
+    // 포스트 삭제
     const [deletePost] = useMutation(DELETE_POST, {
         update(cache, { data: {deletePost}}) {
             console.log('deletePost----------');
@@ -92,7 +98,11 @@ function Post() {
                 variables: { skip: 0, take: 10 },
                 data: { getPosts: newPosts }
             });
-        }
+        },
+        refetchQueries: [
+            { query: GET_ALL_POSTS, variables: { skip: 0, take: 10, keyword: searchKeyword || "" } },
+            { query: GET_POSTS_BY_USER_ID, variables: { userId: loggedInUserId } },
+        ]
     })
 
     const handleDeletePost = async () => {
@@ -208,7 +218,6 @@ function Post() {
     const likedPosts = usePostStore((state) => state.likedPosts);
     const likePost = usePostStore((state) => state.likePost);
     const removeLike = usePostStore((state) => state.removeLike);
-    const loggedInUserId = useUserStore((state) => state.id);
 
     const [likePostMutation] = useMutation(LIKE_POST, {
         variables: {
@@ -249,16 +258,8 @@ function Post() {
             }
         },
         refetchQueries: [
-        //     {
-        //         query: GET_POST_BY_ID,
-        //         variables: {
-        //             id: Number(id)
-        //         }
-        //     },
-            {
-                query: GET_LIKED_POSTS_BY_USER,
-                variables: { userId: Number(loggedInUserId) }
-            }
+            { query: GET_LIKED_POSTS_BY_USER, variables: { userId: Number(loggedInUserId) }},
+            { query: GET_ALL_POSTS, variables: { skip: 0, take: 10, keyword: searchKeyword || "" }},
         ]
     });
 
@@ -290,7 +291,7 @@ function Post() {
                 });
 
 
-                // posts list
+                // all posts list
                 const existingPosts = cache.readQuery<GetPostsQuery>({
                     query: GET_ALL_POSTS,
                     variables: { skip: 0, take: 10 }
@@ -310,7 +311,11 @@ function Post() {
             {
                 query: GET_LIKED_POSTS_BY_USER,
                 variables: { userId: Number(loggedInUserId) }
-            }
+            },
+            {
+                query: GET_ALL_POSTS,
+                variables: { skip: 0, take: 10 }
+            },
         ]
     });
 
@@ -348,6 +353,9 @@ function Post() {
         }
     }, [dataPost, loggedInUserId, isLiked]);  // 의존성 배열에서 isLiked 추가
     
+
+    // path
+    // useEffect(() => {}, [location.pathname]);
 
     return (
         <div

@@ -21,7 +21,6 @@ export class PostResolver {
     ) {
         
         const userId = context.req.user.sub;
-        console.log('userid', userId);
         const videoPath = await this.postService.saveVideo(video);
         const postData = {
             text,
@@ -41,20 +40,24 @@ export class PostResolver {
     async getPosts(
         @Args('skip', { type: () => Int, defaultValue: 0}) skip: number,
         @Args('take', { type: () => Int, defaultValue: 1}) take: number,
+        @Args('keyword', {type: () => String, nullable: true }) keyword: string
     ): Promise<PostType[]> {
-        // console.log('skip', skip, 'take', take)
-        return await this.postService.getPosts(skip, take);
+        return await this.postService.getPosts(skip, take, keyword);
     }
 
     @Mutation(() => PostType)
     async deletePost(@Args('id') id: number) {
-        console.log('erased.')
         return await this.postService.deletePost(id);
     }
 
     @Query(() => [PostType])
     async getPostsByUserId(@Args('userId') userId: number) {
         return await this.postService.getPostsByUserId(userId);
+    }
+
+    @Query(() => [PostType])
+    async searchPosts(@Args('keyword') keyword: string) {
+        return await this.postService.searchPosts(keyword);
     }
 
 }

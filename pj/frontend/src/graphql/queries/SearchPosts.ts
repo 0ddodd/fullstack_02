@@ -1,15 +1,16 @@
-import { gql } from "@apollo/client"
+import { gql } from "@apollo/client";
 
-export const GET_ALL_POSTS = gql`
-    query GetPosts($skip: Int!, $take: Int!, $keyword: String) {
-        getPosts(skip: $skip, take: $take, keyword: $keyword) {
+export const SEARCH_POSTS = gql`
+    query SearchPosts($keyword: String!) {
+        searchPosts (keyword: $keyword) {
             id
             text
             video
+            createdAt
             user {
                 id
-                fullname
                 email
+                fullname
                 image
             }
             likes {
@@ -19,4 +20,4 @@ export const GET_ALL_POSTS = gql`
             }
         }
     }
-`
+`;

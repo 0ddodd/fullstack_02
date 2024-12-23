@@ -16,6 +16,7 @@ import { usePostStore } from '../stores/postStore';
 import { GET_POST_BY_ID } from '../graphql/queries/GetPostById';
 import { UNLIKE_POST } from '../graphql/mutations/UnlikePost';
 import { GET_LIKED_POSTS_BY_USER } from '../graphql/queries/GetLikedPostsByUser';
+import { GET_POSTS_BY_USER_ID } from '../graphql/queries/GetPostsByUserId';
 
 function PostFeed({post}: {post: PostType}) {
 
@@ -39,6 +40,9 @@ function PostFeed({post}: {post: PostType}) {
                 });
             }
         },
+        refetchQueries: [
+            { query: GET_POSTS_BY_USER_ID, variables: { userId: loggedInUserId }},
+        ]
     });
 
     const handleDelete = async (postId: number) => {

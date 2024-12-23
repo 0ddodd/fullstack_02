@@ -7,11 +7,13 @@ export interface GeneralState {
     selectedPosts: null
     ids: null
     posts: null
+    searchKeyword: string
 }
 
 export interface GeneralActions {
     setLoginIsOpen: (isLoginOpen: boolean) => void
     setIsEditProfileOpen: () => void
+    setSearchKeyword: (keyword: string) => void
 }
 
 export const useGeneralStore = create<GeneralState & GeneralActions>()(
@@ -22,6 +24,7 @@ export const useGeneralStore = create<GeneralState & GeneralActions>()(
             selectedPosts: null,
             ids: null,
             posts: null,
+            searchKeyword: "",
             setLoginIsOpen: (isLoginOpen: boolean) => {
                 set({ isLoginOpen })
             },
@@ -29,6 +32,9 @@ export const useGeneralStore = create<GeneralState & GeneralActions>()(
                 return set((state) => ({
                     isEditProfileOpen: !state.isEditProfileOpen
                 }))
+            },
+            setSearchKeyword: (keyword: string) => {
+                set({searchKeyword: keyword})
             }
         }),
         {

@@ -9,7 +9,6 @@ export class CommentService {
 
     async getCommentsByPostId(postId: number): Promise<Comment[]> {
         try {
-            console.log('get comments service')
             const comments = await this.prisma.comment.findMany({
                 where: {
                     postId
@@ -19,8 +18,6 @@ export class CommentService {
                     post: true
                 }
             });
-            // console.log('✍️')
-            // console.log(comments);
             return comments;
         } catch (err) {
             console.log(err)

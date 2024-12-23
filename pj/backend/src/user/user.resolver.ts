@@ -47,7 +47,6 @@ export class UserResolver {
     @Args('loginInput') loginDto: LoginDto,
     @Context() context: { req: Request, res: Response },
   ) {
-    // console.log(context.req)
     return this.authService.login(loginDto, context.res);
   }
 
@@ -78,11 +77,10 @@ export class UserResolver {
     @Args('bio', { type: () => String, nullable: true}) bio?: string,
     @Args('image', { type: () => GraphQLUpload, nullable: true}) image?: any
   ) {
-    console.log(image)
     let imageUrl;
     if (image) imageUrl = await this.storeImageAndGetUrl(image);
   
-    console.log(imageUrl);
+    // console.log(imageUrl);
     // http://localhost:3000/1343a7d8-a18d-42a9-b243-254f55b39f7d_profile.jpg 
     
     return this.userService.updateProfile(context.req.user.sub, {

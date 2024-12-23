@@ -11,7 +11,6 @@ export class CommentResolver {
 
     @Query(() => [Comment])
     async getCommentsByPostId(@Args('postId') postId: number) {
-        console.log('get comments resolver')
         return this.commentService.getCommentsByPostId(postId);
     };
 

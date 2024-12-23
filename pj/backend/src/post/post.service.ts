@@ -68,10 +68,16 @@ export class PostService {
     }
   };
 
-  async getPosts(skip: number, take: number): Promise<PostType[]> {
+  async getPosts(skip: number, take: number, keyword: string): Promise<PostType[]> {
     return await this.prisma.post.findMany({
       skip,
       take,
+      where: {
+        text: keyword ? {
+          contains: keyword,
+          mode: 'insensitive'
+        } : {}
+      },
       include: { user: true, likes: true, comments: true },
       orderBy: { createdAt: 'desc' }
     })
@@ -85,7 +91,6 @@ export class PostService {
   };
 
   async deletePost(id: number): Promise<PostType> {
-    
     try {
       const post = await this.getPostById(id);
       if (!post) {
@@ -104,8 +109,21 @@ export class PostService {
     } catch (err) {
       throw new NotFoundException(err.message);
     }
-    
+  };
 
+  async searchPosts(keyword: string):Promise<PostType[]> {
+    return await this.prisma.post.findMany({
+      where: {
+        text: {
+          contains: keyword,
+          mode: "insensitive"
+        }
+      },
+      include: {
+        user: true,
+        likes: true,
+      }
+    })
   }
 
 
