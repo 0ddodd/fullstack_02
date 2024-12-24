@@ -36,6 +36,12 @@ function Profile() {
         },
     });
 
+    useEffect(() => {
+        console.log('----------------')
+        console.log(id);
+        console.log(dataLikedPostsByUser?.getLikedPostsByUser);
+    }, [id])
+
     return (
         <MainLayout>
             <div className="pt-[90px] w-full max-w-[690px] mx-auto">
@@ -72,7 +78,7 @@ function Profile() {
                         className={`w-60 text-center font-semibold text-[17px] cursor-pointer
                             ${showPosts ? `text-gray-500 py-2` : `py-5 border-b-2`}`
                         }>
-                        현재로그인한유저가좋아요누름
+                        Likes
                     </div>
                 </div>
                 {showPosts ? 
