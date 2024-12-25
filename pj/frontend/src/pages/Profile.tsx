@@ -44,7 +44,7 @@ function Profile() {
 
     return (
         <MainLayout>
-            <div className="pt-[90px] w-full max-w-[690px] mx-auto">
+            <div className="pt-[70px] w-full max-w-[690px] mx-auto">
                 <div className="flex items-center mb-5">
                     <img
                         className="w-[100px] h-[100px] rounded-full object-cover"
