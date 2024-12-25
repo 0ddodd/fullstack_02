@@ -99,7 +99,7 @@ function Login() {
                     !loginData.email ||
                     !loginData.password
                         ? "bg-gray-200"
-                        : "bg-[#F02C56]",
+                        : "bg-[var(--primary-color)]",
                     ].join(" ")}
                     onClick={handleLogin}
                 >Login</button>

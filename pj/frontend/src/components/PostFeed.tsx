@@ -189,10 +189,6 @@ function PostFeed({post}: {post: PostType}) {
                             {post.user.fullname}
                         </span> */}
                     </Link>
-
-                    {/* <button className="border text-[15px] px-[21px] py-.5 border-[#F02C56] text-[#F02C56] hover:bg-[#ffeef2] font-semibold rounded-md">
-                        Follow
-                    </button> */}
                 </div>
 
                 <div className='text-[15px] pb-0.5 break-words md:max-w-[480px] max-w-[300px]'>
@@ -224,8 +220,8 @@ function PostFeed({post}: {post: PostType}) {
                     <div className="relative mr-[75px]">
                         <div className="absolute bottom-0 pl-2">
                             {post.user.id === loggedInUserId && (
-                                <button className="rounded-full bg-gray-200 p-2 mb-2 cursor-pointer">
-                                    <MdDelete onClick={() => handleDelete(post.id)} size="25" color="black" />
+                                <button onClick={() => handleDelete(post.id)} className="rounded-full bg-gray-200 p-2 mb-2 cursor-pointer">
+                                    <MdDelete size="25" color="black" />
                                 </button>
                             )}
                             <button

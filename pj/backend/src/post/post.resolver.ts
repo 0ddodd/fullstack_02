@@ -28,6 +28,7 @@ export class PostResolver {
             user: { connect: { id: userId } }, 
         };
 
+        console.log('create a post.')
         return await this.postService.createPost(postData)
     };
 
@@ -42,7 +43,6 @@ export class PostResolver {
         @Args('take', { type: () => Int, defaultValue: 1}) take: number,
         @Args('keyword', {type: () => String, nullable: true }) keyword: string
     ): Promise<PostType[]> {
-        console.log('posts')
         return await this.postService.getPosts(skip, take, keyword);
     }
 

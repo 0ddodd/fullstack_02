@@ -551,7 +551,7 @@ function Post() {
                             disabled={!comment}
                             onClick={addComment}
                             className={[
-                                comment ? "text-[#F02C56] bg-var(--primary-color) cursor-pointer" : "text-gray-400",
+                                comment ? "text-[bg-var(--primary-color)] bg-var(--primary-color) cursor-pointer" : "text-gray-400",
                                 "font-semibold text-sm ml-5 pr-1",
                                 ].join(" ")}
                             >
