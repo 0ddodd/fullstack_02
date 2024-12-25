@@ -66,8 +66,8 @@ function Feed() {
     return (
         <MainLayout>
             <div className="pt-[80px] w-[calc(100%-90px) max-w-[690px]">
-                <span>ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ"{searchKeyword}"에 관한 목록</span>
-                { data?.getPosts.map((post, index: number) => (
+                <div className={`${searchKeyword === "" && "hidden"} px-16`}>"{searchKeyword}"에 관한 목록</div>
+                { data?.getPosts.map((post) => (
                     <PostFeed key={post.id} post={post}/>
                 ))}
                 <div className="h-20" ref={loadMoreRef}></div>

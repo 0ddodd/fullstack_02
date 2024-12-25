@@ -232,7 +232,7 @@ function EditProfileModal() {
                         // 일반 모드일 때
                         <button
                             onClick={cropAndUpdateImage}
-                            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                         >
                             Apply
                         </button>

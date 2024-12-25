@@ -10,6 +10,7 @@ import { useGeneralStore } from '../stores/generalStore'
 import { useUserStore } from '../stores/userStore'
 import { useMutation } from '@apollo/client'
 import { BiMessageDetail } from 'react-icons/bi'
+import { IoIosVideocam } from "react-icons/io"
 
 function UpperNav() {
     const isLoginOpen = useGeneralStore((state) => state.isLoginOpen);
@@ -53,24 +54,21 @@ function UpperNav() {
 
     return (
         <div id="UpperNav" className="bg-white fixed z-30 flex items-center w-full boder-b h-[61px]">
-            <div className={[
+            {/* <div className={[
                 getURL() === "/" ? "max-w-[1150px]" : "",
                 "flex items-center justify-between w-full px-6 mx-auto"
-            ].join(" ")}>
-                <div className={[
+            ].join(" ")}> */}
+            <div className="max-w-[1150px] flex items-center justify-between w-full px-6 py-3 mx-auto">
+                {/* <div className={[
                     getURL() === "/" ? "w-[80%]" : "lg:w-[20%] w-[70%]"
-                ].join(" ")}>
+                ].join(" ")}> */}
+                <div className="lg:w-[20%] w-[70%]">
                     <Link to="/">
-                        <img 
-                            src={logo}
-                            width={getURL() === "/" ? "100" : "50"}
-                            height={getURL() === "/" ? "100" : "50"}
-                            alt="logo"
-                        />
+                        <IoIosVideocam size="34"/>
                     </Link>
                 </div>
 
-                <div className="hidden md:flex items-center bg-[#F1F1F1] p-1 rounded-full max-w-[380px] w-full">
+                <div className={`${getURL() === "/" ? "md:flex" : "hidden"} items-center bg-[#F1F1F1] p-1 rounded-full max-w-[380px] w-full`}>
                     <input 
                         type="text"
                         onKeyDown={handleSearch}

@@ -23,12 +23,12 @@ function SideNav() {
             <div className="lg:w-full w-[55px] mx-auto">
                 <Link to="/">
                     <MenuItem
-                        iconString="For You"
-                        colorString="#F02C56"
-                        sizeString="30"
+                        iconString="Home"
+                        colorString="var(--primary-color)"
+                        sizeString="28"
                     ></MenuItem>
                 </Link>
-                <MenuItem
+                {/* <MenuItem
                     iconString="Following"
                     colorString="#000000"
                     sizeString="27"
@@ -37,12 +37,12 @@ function SideNav() {
                     iconString="LIVE"
                     colorString="#000000"
                     sizeString="27"
-                ></MenuItem>
-                <div className="border-b lg:ml-2 mt-2"></div>
+                ></MenuItem> */}
+                <div className="border-b lg:ml-2 mt-2 w-4/5"></div>
             </div>
 
             <div className="lg:block hidden text-xs text-gray-600 font-semibold pt-4 pb-2 px-2">
-                Suggested accounts
+                Accounts
             </div>
             <div className="lg:hidden block pt-3" />
             <ul>
@@ -56,7 +56,7 @@ function SideNav() {
             </ul>
             <button
                 onClick={() => setShowAllUsers(!showAllUsers)}
-                className="lg:block hidden text-[#F02C56] pt-1.5 pl-2 text-[13px]"
+                className="lg:block hidden text-[#4cb46f] pt-1.5 pl-2 text-[13px]"
             >
                 See more
             </button>

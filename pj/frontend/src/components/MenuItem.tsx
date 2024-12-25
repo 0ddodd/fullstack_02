@@ -15,7 +15,7 @@ const MenuItem:React.FC<IconComponentProps> = ({
     let Icon: IconType | null = null;
 
     switch (iconString) {
-        case "For You":
+        case "Home":
             Icon = AiFillHome;
             break;
         case "Following":

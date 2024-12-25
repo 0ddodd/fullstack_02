@@ -10,6 +10,7 @@ import Post from './pages/Post.tsx'
 import ProtectedRoutes from './components/ProtectedRoutes.tsx'
 import { ApolloProvider } from '@apollo/client'
 import { client } from './utils/apolloClient.ts'
+import './styles/color.css'
 
 const router = createBrowserRouter([
   {

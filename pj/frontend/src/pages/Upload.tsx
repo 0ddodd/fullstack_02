@@ -126,7 +126,7 @@ function Upload() {
         <>
         <UploadError errorType={errorType} />
         <UploadLayout>
-            <div className="w-full mt-[80px] mb-[40px] bg-white shadow-lg rounded-md py-6 md:px-10 px-4">
+            <div className="w-full mt-[75px] mb-[10px] bg-white shadow-lg rounded-md py-6 md:px-10 px-4">
             <div>
                 <div className="text-[23px] font-semibold">Upload video</div>
                 <div className="text-gray-400 mt-1">

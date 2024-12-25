@@ -12,7 +12,6 @@ function MainLayout({ children }: { children: ReactNode }) {
                 <aside className="lg:block w-[250px]">
                     <SideNav />
                 </aside>
-
                 <main className="flex-1">
                     {children}
                 </main>
