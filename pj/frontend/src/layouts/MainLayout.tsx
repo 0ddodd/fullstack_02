@@ -9,7 +9,7 @@ function MainLayout({ children }: { children: ReactNode }) {
                 <UpperNav />
             </header>
             <div className="flex mx-auto max-w-[1140px] px-4 w-full">
-                <aside className="lg:block w-[250px]">
+                <aside className="hidden lg:block w-[250px]">
                     <SideNav />
                 </aside>
                 <main className="flex-1">
