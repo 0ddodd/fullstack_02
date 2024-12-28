@@ -1,4 +1,3 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
@@ -36,10 +35,8 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')!).render(
-  // <StrictMode>
-    <ApolloProvider client={client}>
-      <RouterProvider router={router}/>
-      <App />
-    </ApolloProvider>
-  // </StrictMode>,
+  <ApolloProvider client={client}>
+    <RouterProvider router={router}/>
+    <App />
+  </ApolloProvider>
 )

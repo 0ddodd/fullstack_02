@@ -214,7 +214,7 @@ function PostFeed({post}: {post: PostType}) {
                         >
                         <video 
                             ref={video}
-                            src={`http://localhost:3000/${post.video}`}
+                            src={`https://vpu.onrender.com/${post.video}`}
                             loop
                             muted
                             className="rounded-xl object-cover mx-auto h-full"

@@ -45,7 +45,7 @@ function Register() {
             };
 
         } catch (err) {
-            console.log(err.graphQLErrors);
+            console.log(err);
             setErrors(err.graphQLErrors[0].extensions);
         }
     }

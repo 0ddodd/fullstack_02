@@ -11,7 +11,7 @@ async function bootstrap() {
   app.use(cookieParser());
   
   app.enableCors({
-    origin: 'http://127.0.0.1:5173',
+    origin: 'https://fancy-tarsier-a66579.netlify.app',
     credentials: true,
     allowedHeaders: [
       'Accept',

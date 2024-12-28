@@ -43,9 +43,11 @@ function Upload() {
         update: (cache, { data }) => {
             // 새로 업로드된 포스트를 캐시에 추가
             const newPost = data.createPost;
+            console.log('?????')
     
             const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 10 } });
-    
+            console.log(existingPosts);
+
             cache.writeQuery({
                 query: GET_ALL_POSTS,
                 variables: { skip: 0, take: 10 },
