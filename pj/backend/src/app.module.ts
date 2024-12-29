@@ -20,7 +20,8 @@ import { CommentModule } from './comment/comment.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
       playground: true,
-      context: ({req,res}) => ({req, res})
+      context: ({req,res}) => ({req, res}),
+      introspection: true,
     }),
     ConfigModule.forRoot({}),
     ServeStaticModule.forRoot({
@@ -32,6 +33,7 @@ import { CommentModule } from './comment/comment.module';
     UserModule,
     LikeModule,
     CommentModule,
+    
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

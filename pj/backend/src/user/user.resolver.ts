@@ -27,6 +27,7 @@ export class UserResolver {
     @Context() context: {res: Response}
   ): Promise<RegisterResponse> {
 
+    console.log("register!")
     if (registerDto.password !== registerDto.confirmPassword) {
       throw new BadRequestException({
         confirmPassword: 'Password and confirm password are not the same.',
