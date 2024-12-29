@@ -35,7 +35,6 @@ export class LikeResolver {
         @Args('userId') userId: number,
         @Context() ctx: {req: Request} 
     ) {
-        console.log('like posts user resolver')
         return this.likeService.getLikedPostsByUser(userId);
     }
 }

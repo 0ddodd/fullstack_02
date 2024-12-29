@@ -33,8 +33,6 @@ export class LikeService {
                 post: true
             }
         })
-        console.log(likedPosts)
-        console.log('--')
 
         return likedPosts.map(like => like.post);
     }

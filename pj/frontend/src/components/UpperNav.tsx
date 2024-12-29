@@ -98,7 +98,7 @@ function UpperNav() {
                     </Link>
                     )}
 
-                    {!user.id && <div className="flex items-center bg-[#F02C56] text-white border rounded-md px-3 py-[6px] min-w-[110px]">
+                    {!user.id && <div className="flex items-center bg-[var(--primary-color)] text-white border rounded-md px-3 py-[6px] min-w-[110px]">
                         <button onClick={() => setIsLoginOpen(!isLoginOpen)}>
                             <span className="mx-4 font-medium text-[15px]">log In</span>
                         </button>

@@ -115,7 +115,7 @@ function Register() {
                     !registerData.fullName ||
                     !registerData.confirmPassword
                         ? "bg-gray-200"
-                        : "bg-[#F02C56]",
+                        : "bg-[var(--primary-color)]",
                     ].join(" ")}
                     onClick={handleRegister}
                 >Register</button>

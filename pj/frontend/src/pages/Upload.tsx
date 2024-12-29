@@ -159,7 +159,7 @@ function Upload() {
                     <div className="mt-2 text-gray-400 text-[13px]">
                         Less than 2 GB
                     </div>
-                    <div className="px-2 py-1.5 mt-8 text-white text-[15px] w-80% bg-[#F02C56] rounded-sm">
+                    <div className="px-2 py-1.5 mt-8 text-white text-[15px] w-80% bg-[var(--primary-color)] rounded-sm">
                         Select file
                     </div>
                     <input
@@ -224,7 +224,7 @@ function Upload() {
                             </div>
 
                             <div className="flex justify-end max-w-[130px] w-full h-full text-center my-auto">
-                                <button className="px-8 py-1.5 text-white text-[15px] bg-[#F02C56] rounded-sm">
+                                <button className="px-8 py-1.5 text-white text-[15px] bg-[var(--primary-color)] rounded-sm">
                                     Edit
                                 </button>
                             </div>
@@ -252,7 +252,7 @@ function Upload() {
                             </button>
                             <button
                                 onClick={handleCreatePost}
-                                className="px-10 py-2.5 mt-8 border text-[16px] text-white bg-[#F02C56] rounded-sm"
+                                className="px-10 py-2.5 mt-8 border text-[16px] text-white bg-[var(--primary-color)] rounded-sm"
                             >
                                 Post
                             </button>
