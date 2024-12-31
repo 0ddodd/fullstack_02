@@ -37,9 +37,9 @@ function Profile() {
     });
 
     useEffect(() => {
-        console.log('----------------')
-        console.log(id);
-        console.log(dataLikedPostsByUser?.getLikedPostsByUser);
+        console.log('-------프로필 엑박 이미지 확인--------')
+        console.log('user store의 user 확인');
+        console.log(user);
     }, [id])
 
     return (

@@ -81,7 +81,8 @@ export class UserResolver {
     let imageUrl;
     if (image) imageUrl = await this.storeImageAndGetUrl(image);
   
-    // console.log(imageUrl);
+    console.log('imageUrl');
+    console.log(imageUrl);
     // http://localhost:3000/1343a7d8-a18d-42a9-b243-254f55b39f7d_profile.jpg 
     
     return this.userService.updateProfile(context.req.user.sub, {
@@ -98,7 +99,16 @@ export class UserResolver {
     const imagePath = join(process.cwd(), 'public', uniqueFilename);
     const imageUrl = `${process.env.APP_URL}/${uniqueFilename}`;
     
+    console.log('uniqueFilename')
+    console.log(uniqueFilename)
+    console.log('imagePath')
+    console.log(imagePath)
+    console.log('imageUrl')
+    console.log(imageUrl)
+
     const readStream = createReadStream();
+    console.log('readStream')
+    console.log(readStream)
     readStream.pipe(createWriteStream(imagePath));
 
     return imageUrl;
