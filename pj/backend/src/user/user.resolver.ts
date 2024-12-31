@@ -98,10 +98,15 @@ export class UserResolver {
     const uniqueFilename = `${uuidv4()}_${filename}`;
     // const imagePath = join(process.cwd(), 'public', uniqueFilename);
 
-    const publicDir = 'C://public';
+    const publicDir = 'C:\public';
     if (!fs.existsSync(publicDir)) {
-      console.log('폴더 생성');
-      fs.mkdirSync(publicDir, { recursive: true });
+      try {
+        console.log('폴더 생성');
+        fs.mkdirSync(publicDir, { recursive: true });
+      } catch (err) {
+        console.log('폴더 생성 실패');
+        console.log(err);
+      }
     };
 
     const imagePath = join(publicDir, uniqueFilename);
