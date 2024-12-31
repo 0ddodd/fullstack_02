@@ -11,7 +11,7 @@ import { GraphqlAuthGuard } from 'src/auth/graphql-auth.guard';
 import { GraphQLUpload } from 'graphql-upload-ts';
 import { v4 as uuidv4 } from 'uuid';
 import { join } from 'path';
-import { createWriteStream } from 'fs';
+import * as fs from 'fs';
 
 @UseFilters(GraphQLErrorFilter)
 @Resolver(() => User)
@@ -97,7 +97,13 @@ export class UserResolver {
 
     const uniqueFilename = `${uuidv4()}_${filename}`;
     // const imagePath = join(process.cwd(), 'public', uniqueFilename);
-    const imagePath = join('C:/public', uniqueFilename);
+
+    const publicDir = 'C:/public';
+    if (!fs.existsSync(publicDir)) {
+      fs.mkdirSync(publicDir, { recursive: true });
+    };
+
+    const imagePath = join(publicDir, uniqueFilename);
     const imageUrl = `${process.env.APP_URL}/${uniqueFilename}`;
     
     console.log('uniqueFilename')
