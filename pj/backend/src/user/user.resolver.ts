@@ -96,15 +96,18 @@ export class UserResolver {
     const { createReadStream, filename } = await file;
 
     const uniqueFilename = `${uuidv4()}_${filename}`;
-    const imagePath = join(process.cwd(), 'public', uniqueFilename);
+    // const imagePath = join(process.cwd(), 'public', uniqueFilename);
+    const imagePath = join('C:/public', uniqueFilename);
     const imageUrl = `${process.env.APP_URL}/${uniqueFilename}`;
     
     console.log('uniqueFilename')
     console.log(uniqueFilename)
     console.log('imagePath')
     console.log(imagePath)
+    // /opt/render/project/src/pj/backend/public/f7a638cf-fbed-45e1-8e2a-dcdf37e78404_profile.jpg
     console.log('imageUrl')
     console.log(imageUrl)
+    // https://vpu.onrender.com/f7a638cf-fbed-45e1-8e2a-dcdf37e78404_profile.jpg
 
     const readStream = createReadStream();
     console.log('readStream')
