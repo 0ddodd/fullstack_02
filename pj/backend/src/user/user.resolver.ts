@@ -118,7 +118,7 @@ export class UserResolver {
     const readStream = createReadStream();
     console.log('readStream')
     console.log(readStream)
-    readStream.pipe(createWriteStream(imagePath));
+    readStream.pipe(fs.createWriteStream(imagePath));
 
     return imageUrl;
   }
