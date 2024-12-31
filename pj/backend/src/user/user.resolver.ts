@@ -102,7 +102,7 @@ export class UserResolver {
     if (!fs.existsSync(publicDir)) {
       try {
         fs.mkdirSync(publicDir, { recursive: true });
-        console.log('폴더 생성!');
+        console.log('폴더 생성!!');
       } catch (err) {
         console.log(err);
         console.log('폴더 생성 실패');
