@@ -101,11 +101,11 @@ export class UserResolver {
     const publicDir = 'C:/public';
     if (!fs.existsSync(publicDir)) {
       try {
-        console.log('폴더 생성!');
         fs.mkdirSync(publicDir, { recursive: true });
+        console.log('폴더 생성!');
       } catch (err) {
-        console.log('폴더 생성 실패');
         console.log(err);
+        console.log('폴더 생성 실패');
       }
     };
 
