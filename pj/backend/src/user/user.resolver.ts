@@ -11,7 +11,9 @@ import { GraphqlAuthGuard } from 'src/auth/graphql-auth.guard';
 import { GraphQLUpload } from 'graphql-upload-ts';
 import { v4 as uuidv4 } from 'uuid';
 import { join } from 'path';
+// import { createWriteStream } from 'fs';
 import * as fs from 'fs';
+import * as path from 'path';
 
 @UseFilters(GraphQLErrorFilter)
 @Resolver(() => User)
@@ -96,22 +98,19 @@ export class UserResolver {
     const { createReadStream, filename } = await file;
 
     const uniqueFilename = `${uuidv4()}_${filename}`;
-    // const imagePath = join(process.cwd(), 'public', uniqueFilename);
-
-    const publicDir = 'C:/public';
-    if (!fs.existsSync(publicDir)) {
-      try {
-        fs.mkdirSync(publicDir, { recursive: true });
-        console.log('폴더 생성!!');
-      } catch (err) {
-        console.log(err);
-        console.log('폴더 생성 실패');
-      }
-    };
-
-    const imagePath = join(publicDir, uniqueFilename);
+    const imagePath = join(process.cwd(), 'public', uniqueFilename);
     const imageUrl = `${process.env.APP_URL}/${uniqueFilename}`;
     
+    // render의 disk (storage)
+    const publicDir = "/mnt/data";
+
+    if (!fs.existsSync(publicDir)) {
+      fs.mkdirSync(publicDir, { recursive: true });
+    }
+
+    const filePath = path.join(publicDir, uniqueFilename);
+    fs.createWriteStream(filePath);
+
     console.log('uniqueFilename')
     console.log(uniqueFilename)
     console.log('imagePath')
@@ -120,11 +119,13 @@ export class UserResolver {
     console.log('imageUrl')
     console.log(imageUrl)
     // https://vpu.onrender.com/f7a638cf-fbed-45e1-8e2a-dcdf37e78404_profile.jpg
-
+    console.log('filePath')
+    console.log(filePath)
+    
     const readStream = createReadStream();
     console.log('readStream')
     console.log(readStream)
-    readStream.pipe(fs.createWriteStream(imagePath));
+    readStream.pipe(fs.createWriteStream(filePath));
 
     return imageUrl;
   }
