@@ -83,7 +83,7 @@ export class UserResolver {
     let imageUrl;
     if (image) imageUrl = await this.storeImageAndGetUrl(image);
   
-    console.log('imageUrl');
+    console.log('imageUrl~~~~~~~~~~~~');
     console.log(imageUrl);
     // http://localhost:3000/1343a7d8-a18d-42a9-b243-254f55b39f7d_profile.jpg 
     
