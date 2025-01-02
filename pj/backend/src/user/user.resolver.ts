@@ -99,7 +99,7 @@ export class UserResolver {
 
     const uniqueFilename = `${uuidv4()}_${filename}`;
     const imagePath = join(process.cwd(), 'public', uniqueFilename);
-    const imageUrl = `${process.env.APP_URL}/${uniqueFilename}`;
+    const imageUrl = `${process.env.APP_URL}/public/${uniqueFilename}`;
     
     // render의 disk (storage)
     const publicDir = "/mnt/data";

@@ -4,6 +4,7 @@ import * as cookieParser from 'cookie-parser';
 import { ValidationContext } from 'graphql';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { graphqlUploadExpress } from 'graphql-upload-ts';
+import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -27,6 +28,10 @@ async function bootstrap() {
 
   // `graphql-upload` 미들웨어 설정
   app.use(graphqlUploadExpress());
+  
+  // 정적 파일 제공
+  const publicDir = '/mnt/data';
+  app.use('/public', express.static(publicDir));
   
   app.useGlobalPipes(
     new ValidationPipe({
