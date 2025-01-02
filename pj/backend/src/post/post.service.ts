@@ -25,9 +25,12 @@ export class PostService {
     const videoName = `${Date.now()}${extname(video.filename)}`;
     const videoPath = `/files/${videoName}`;
     const stream = video.createReadStream();
-    const outputPath = `public${videoPath}`;
 
-    const directoryPath = `public/files`;
+    // render disk
+    const publicDir = "/mnt/data";
+    const outputPath = `${publicDir}${videoPath}`;
+
+    const directoryPath = `${publicDir}/files`;
     if (!existsSync(directoryPath)) {
       await fsPromises.mkdir(directoryPath, { recursive: true });
     }
