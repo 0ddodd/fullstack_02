@@ -40,8 +40,6 @@ function EditProfileModal() {
 
     const saveCroppedImage = () => {
         const cropper = cropperRef?.current?.cropper;
-        // console.log(cropper)
-
         setCroppingDone(true);
 
         if (cropper) {

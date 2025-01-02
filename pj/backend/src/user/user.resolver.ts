@@ -83,10 +83,6 @@ export class UserResolver {
     let imageUrl;
     if (image) imageUrl = await this.storeImageAndGetUrl(image);
   
-    console.log('imageUrl~~~~~~~~~~~~');
-    console.log(imageUrl);
-    // http://localhost:3000/1343a7d8-a18d-42a9-b243-254f55b39f7d_profile.jpg 
-    
     return this.userService.updateProfile(context.req.user.sub, {
       fullname,
       bio,
@@ -98,9 +94,8 @@ export class UserResolver {
     const { createReadStream, filename } = await file;
 
     const uniqueFilename = `${uuidv4()}_${filename}`;
-    const imagePath = join(process.cwd(), 'public', uniqueFilename);
+    // 클라이언트에서 접근 가능한 url
     const imageUrl = `${process.env.APP_URL}/public/${uniqueFilename}`;
-    
     // render의 disk (storage)
     const publicDir = "/mnt/data";
 
@@ -108,23 +103,17 @@ export class UserResolver {
       fs.mkdirSync(publicDir, { recursive: true });
     }
 
+    // 서버 내부의 실제 파일 경로
     const filePath = path.join(publicDir, uniqueFilename);
     fs.createWriteStream(filePath);
 
-    console.log('uniqueFilename')
-    console.log(uniqueFilename)
-    console.log('imagePath')
-    console.log(imagePath)
-    // /opt/render/project/src/pj/backend/public/f7a638cf-fbed-45e1-8e2a-dcdf37e78404_profile.jpg
-    console.log('imageUrl')
-    console.log(imageUrl)
-    // https://vpu.onrender.com/f7a638cf-fbed-45e1-8e2a-dcdf37e78404_profile.jpg
-    console.log('filePath')
-    console.log(filePath)
+    // console.log(imageUrl)
+    // https://vpu.onrender.com/public/9079fbf1-3273-4359-b1d6-be4afaaca9c8_profile.jpg
+    
+    // console.log(filePath)
+    // /mnt/data/9079fbf1-3273-4359-b1d6-be4afaaca9c8_profile.jpg
     
     const readStream = createReadStream();
-    console.log('readStream')
-    console.log(readStream)
     readStream.pipe(fs.createWriteStream(filePath));
 
     return imageUrl;
