@@ -113,8 +113,11 @@ export class PostService {
       if (!post) {
         throw new NotFoundException(`Post with ID ${id} not found.`);
       }
+      
+      const publicDir = "/mnt/data";
+      
       const fs = await import('fs');
-      fs.unlinkSync(`public${post.video}`);
+      fs.unlinkSync(`${publicDir}${post.video}`);
 
       const deletedPost = await this.prisma.post.delete({
         where: {id},
