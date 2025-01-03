@@ -23,13 +23,13 @@ export class PostService {
     };
 
     const videoName = `${Date.now()}${extname(video.filename)}`;
-    const videoPath = `/files/${videoName}`;
+    const videoPath = `files/${videoName}`;
     const clientVideoPath = `${process.env.APP_URL}/files/${videoName}`;
     const stream = video.createReadStream();
 
     // render disk
     const publicDir = "/mnt/data";
-    const outputPath = `${publicDir}${videoPath}`;
+    const outputPath = `${publicDir}/${videoPath}`;
 
     console.log('videoName')
     console.log(videoName)
@@ -58,7 +58,7 @@ export class PostService {
       stream.on('error', reject);
     })
 
-    return clientVideoPath;
+    return videoPath;
   }
 
   async createPost(data: Prisma.PostCreateInput) {
