@@ -59,7 +59,7 @@ function PostProfile({post}: {post:PostType}) {
                     muted
                     loop
                     className="aspect-[3/4] object-cover rounded-md"
-                    src={"https://vpu.onrender.com/" + post.video}
+                    src={`https://vpu.onrender.com/files/${post.video}`}
                 />
                 <div className="px-1 mb-2">
                     <div className="text-gray-700 text-[15px] pt-1 break-words">

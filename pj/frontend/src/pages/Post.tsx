@@ -405,7 +405,7 @@ function Post() {
                 <div className="bg-black bg-opacity-90 lg:min-w-[480px] relative" onClick={toggleVideoPlay}>
                     <video
                         ref={video}
-                        src={"https://vpu.onrender.com/" + dataPost?.getPostById.video}
+                        src={"https://vpu.onrender.com/files/" + dataPost?.getPostById.video}
                         loop
                         muted
                         className="h-screen mx-auto"
