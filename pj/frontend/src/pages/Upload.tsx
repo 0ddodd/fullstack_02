@@ -24,10 +24,13 @@ function Upload() {
     const fileRef = useRef<HTMLInputElement>(null);
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            // console.log(e.target)
-            // console.log(e.target.files)
+            console.log('e.target')
+            console.log(e.target)
+            console.log(e.target.files)
             setFileDisplay(URL.createObjectURL(e.target.files[0]));
             setFileData(e.target.files[0]);
+            console.log('file data')
+            console.log(fileData)
         }
     };
 

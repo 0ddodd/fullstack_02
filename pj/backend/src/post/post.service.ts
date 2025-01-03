@@ -30,7 +30,21 @@ export class PostService {
     const publicDir = "/mnt/data";
     const outputPath = `${publicDir}${videoPath}`;
 
+    console.log('videoName')
+    console.log(videoName)
+    console.log('videoPath')
+    console.log(videoPath)
+    console.log('stream')
+    console.log(stream)
+    console.log('publicDir')
+    console.log(publicDir)
+    console.log('outputPath')
+    console.log(outputPath)
+
     const directoryPath = `${publicDir}/files`;
+    console.log('directoryPath');
+    console.log(directoryPath);
+
     if (!existsSync(directoryPath)) {
       await fsPromises.mkdir(directoryPath, { recursive: true });
     }
