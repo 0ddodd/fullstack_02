@@ -23,7 +23,7 @@ export class PostService {
     };
 
     const videoName = `${Date.now()}${extname(video.filename)}`;
-    const videoPath = `files/${videoName}`;
+    const videoPath = `/files/${videoName}`;
     const stream = video.createReadStream();
 
     // render disk

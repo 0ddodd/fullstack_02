@@ -29,10 +29,11 @@ async function bootstrap() {
   // `graphql-upload` 미들웨어 설정
   app.use(graphqlUploadExpress());
   
-  // 정적 파일 제공
+  // 정적 파일 제공 (프사, 비디오)
   const publicDir = '/mnt/data';
   app.use('/public', express.static(publicDir));
-  
+  app.use('/files', express.static(publicDir));
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
