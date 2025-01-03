@@ -32,6 +32,9 @@ export class PostResolver {
             user: { connect: { id: userId } }, 
         };
 
+        console.log('post data 🎮')
+        console.log(postData)
+
         return await this.postService.createPost(postData)
     };
 

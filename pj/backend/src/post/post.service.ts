@@ -23,13 +23,12 @@ export class PostService {
     };
 
     const videoName = `${Date.now()}${extname(video.filename)}`;
-    const videoPath = `files/${videoName}`;
-    const clientVideoPath = `${process.env.APP_URL}/files/${videoName}`;
+    const videoPath = `/files/${videoName}`;
     const stream = video.createReadStream();
 
     // render disk
     const publicDir = "/mnt/data";
-    const outputPath = `${publicDir}/${videoPath}`;
+    const outputPath = `${publicDir}${videoPath}`;
 
     console.log('videoName')
     console.log(videoName)
