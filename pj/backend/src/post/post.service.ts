@@ -123,7 +123,7 @@ export class PostService {
       
       const fs = await import('fs');
       // fs.unlinkSync(`${publicDir}/${post.video}`);
-      fs.unlinkSync(`${publicDir}/files/${post.video}`);
+      fs.unlinkSync(`public${post.video}`);
 
       const deletedPost = await this.prisma.post.delete({
         where: {id},
