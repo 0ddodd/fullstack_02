@@ -161,7 +161,9 @@ function PostFeed({post}: {post: PostType}) {
     };
 
     useEffect(() => {
-
+        console.log('post video1!!!!')
+        console.log(post.video)
+        
         if (video.current) {
             video.current
             .play()
