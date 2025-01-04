@@ -110,8 +110,8 @@ export class PostService {
   async deletePost(id: number): Promise<PostType> {
     try {
       const post = await this.getPostById(id);
-      console.log('post services video')
-      console.log(post.video);
+      // console.log('post services video')
+      // console.log(post.video);
       if (!post) {
         throw new NotFoundException(`Post with ID ${id} not found.`);
       }
@@ -119,11 +119,8 @@ export class PostService {
       const publicDir = "/mnt/data";
       
       const fs = await import('fs');
-      // 원복
       // fs.unlinkSync(`${publicDir}/${post.video}`);
-
-      const videoxx=post.video.split('com/')[1]
-      fs.unlinkSync(`${publicDir}/${videoxx}`);
+      fs.unlinkSync(`${publicDir}/undefined`);
 
       const deletedPost = await this.prisma.post.delete({
         where: {id},
