@@ -118,10 +118,12 @@ export class PostService {
       
       const fs = await import('fs');
       // 원복
-      // fs.unlinkSync(`${publicDir}/${post.video}`);
+      fs.unlinkSync(`${publicDir}/${post.video}`);
+      console.log('post services video')
+      console.log(post.video);
 
-      const videoxx=post.video.split('com/')[1]
-      fs.unlinkSync(`${publicDir}/${videoxx}`);
+      // const videoxx=post.video.split('com/')[1]
+      // fs.unlinkSync(`${publicDir}/${videoxx}`);
 
       const deletedPost = await this.prisma.post.delete({
         where: {id},
