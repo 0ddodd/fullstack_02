@@ -182,20 +182,20 @@ export class PostService {
   //   }
   // };
 
-  // async searchPosts(keyword: string):Promise<PostType[]> {
-  //   return await this.prisma.post.findMany({
-  //     where: {
-  //       text: {
-  //         contains: keyword,
-  //         mode: "insensitive"
-  //       }
-  //     },
-  //     include: {
-  //       user: true,
-  //       likes: true,
-  //     }
-  //   })
-  // }
+  async searchPosts(keyword: string):Promise<PostType[]> {
+    return await this.prisma.post.findMany({
+      where: {
+        text: {
+          contains: keyword,
+          mode: "insensitive"
+        }
+      },
+      include: {
+        user: true,
+        likes: true,
+      }
+    })
+  }
 
 
 }
