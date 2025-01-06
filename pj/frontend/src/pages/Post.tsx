@@ -29,6 +29,7 @@ function Post() {
     const searchKeyword = useGeneralStore((state) => state.searchKeyword);
     const location = useLocation();
     const navigate = useNavigate();
+    const [locaState, setLocaState] = useState("/");
 
     const [createComment, { data: commentData }] = useMutation(CREATE_COMMENT, {
         refetchQueries: [
@@ -351,7 +352,16 @@ function Post() {
     useEffect(() => {
         console.log('🚩')
         console.log(location);
-    }, [location.pathname]);
+        if (location.state?.from === "/") {
+            console.log("from /")
+            setLocaState("/");
+        } else if (location.state?.from.startsWith("/profile")) {
+            console.log("from profile")
+            setLocaState(location.state?.from)
+        } else {
+            return;
+        }
+    }, [location]);
 
     return (
         <div
@@ -360,7 +370,8 @@ function Post() {
         >
             <div className="lg:w-[calc(100%-540px)] h-full relative">
                 <Link
-                    to={location.state?.from === "/" ? "/" :`/profile/${loggedInUserId}`}
+                    to={locaState}
+                    // to={location.state?.from === "/" ? "/" :`/profile/${loggedInUserId}`}
                     className="absolute z-20 m-5 rounded-full hover:bg-gray-800 bg-gray-700 p-1.5"
                 >
                     <ImCross color="#FFFFFF" size="27" />

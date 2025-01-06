@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 import { ImSpinner } from 'react-icons/im';
 import { BsFillBarChartFill } from 'react-icons/bs';
 import { FiAlertCircle } from 'react-icons/fi';
+import { useUserStore } from '../stores/userStore';
 
 function PostProfile({post}: {post:PostType}) {
     const video = useRef<HTMLVideoElement>(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const loggedInUserId = useUserStore((state)=>state.id);
 
     useEffect(() => {
         const handleLoadedData = () => {
@@ -39,7 +41,7 @@ function PostProfile({post}: {post:PostType}) {
 
 
     return (
-        <Link to={`/post/${post.id}`} state={{from: `/post/${post.id}`}}>
+        <Link to={`/post/${post.id}`} state={{from: `/profile/${loggedInUserId}`}}>
             <div
                 className="relative brightness-90 hover:brightness-[1.3] cursor-pointer"
                 onMouseEnter={() => isHover(true)}
