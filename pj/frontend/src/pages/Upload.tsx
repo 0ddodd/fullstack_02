@@ -45,15 +45,18 @@ function Upload() {
         // }
         update: (cache, { data }) => {
             // 새로 업로드된 포스트를 캐시에 추가
+            console.log('update!')
             const newPost = data.createPost;
-            console.log('?????')
+            console.log('newPost')
+            console.log(newPost)
     
-            const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 10 } });
+            const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 10, keyword: "" } });
+            console.log('existingPosts');
             console.log(existingPosts);
 
             cache.writeQuery({
                 query: GET_ALL_POSTS,
-                variables: { skip: 0, take: 10 },
+                variables: { skip: 0, take: 10, keyword: "" },
                 data: {
                     getPosts: [newPost, ...existingPosts.getPosts],
                 },
