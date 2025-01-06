@@ -29,21 +29,7 @@ export class PostService {
     // render disk
     const publicDir = "/mnt/data";
     const outputPath = `${publicDir}${videoPath}`;
-
-    console.log('videoName')
-    console.log(videoName)
-    console.log('videoPath')
-    console.log(videoPath)
-    console.log('stream')
-    console.log(stream)
-    console.log('publicDir')
-    console.log(publicDir)
-    console.log('outputPath')
-    console.log(outputPath)
-
     const directoryPath = `${publicDir}/files`;
-    console.log('directoryPath');
-    console.log(directoryPath);
 
     if (!existsSync(directoryPath)) {
       await fsPromises.mkdir(directoryPath, { recursive: true });
@@ -86,7 +72,6 @@ export class PostService {
   };
 
   async getPosts(skip: number, take: number, keyword: string): Promise<PostType[]> {
-    console.log('get posts service --------------------------')
     const posts = await this.prisma.post.findMany({
       skip,
       take,
@@ -154,36 +139,6 @@ export class PostService {
       throw new NotFoundException(err.message);
     }
   }
-  
-
-  // async deletePost(id: number): Promise<PostType> {
-  //   try {
-  //     const post = await this.getPostById(id);
-      
-  //     console.log('post services video')
-  //     console.log(post)
-  //     console.log(post.video);
-      
-  //     if (!post) {
-  //       throw new NotFoundException(`Post with ID ${id} not found.`);
-  //     }
-      
-  //     const publicDir = "/mnt/data";
-      
-  //     const fs = await import('fs');
-  //     fs.unlinkSync(`${publicDir}/${post.video}`);
-
-  //     const deletedPost = await this.prisma.post.delete({
-  //       where: {id},
-  //       include: {user: true}
-  //     });
-
-  //     return deletedPost;
-      
-  //   } catch (err) {
-  //     throw new NotFoundException(err.message);
-  //   }
-  // };
 
   async searchPosts(keyword: string):Promise<PostType[]> {
     return await this.prisma.post.findMany({
