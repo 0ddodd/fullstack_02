@@ -37,7 +37,7 @@ function Upload() {
     const [createPost, {loading}] = useMutation(CREATE_POST, {
         onError: (err) => {
             console.log(err);
-            setErrors(err.graphQLErrors[0].extensions?.errors as string[]);
+            // setErrors(err.graphQLErrors[0].extensions?.errors as string[]);
         },
         // variables: {
         //     text: caption,
@@ -45,18 +45,18 @@ function Upload() {
         // }
         update: (cache, { data }) => {
             // 새로 업로드된 포스트를 캐시에 추가
-            console.log('update!')
+            console.log('update')
             const newPost = data.createPost;
             console.log('newPost')
             console.log(newPost)
     
-            const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 10, keyword: "" } });
+            const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 10 } });
             console.log('existingPosts');
             console.log(existingPosts);
 
             cache.writeQuery({
                 query: GET_ALL_POSTS,
-                variables: { skip: 0, take: 10, keyword: "" },
+                variables: { skip: 0, take: 10 },
                 data: {
                     getPosts: [newPost, ...existingPosts.getPosts],
                 },

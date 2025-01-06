@@ -86,7 +86,8 @@ export class PostService {
   };
 
   async getPosts(skip: number, take: number, keyword: string): Promise<PostType[]> {
-    return await this.prisma.post.findMany({
+    console.log('get posts service --------------------------')
+    const posts = await this.prisma.post.findMany({
       skip,
       take,
       where: {
@@ -97,7 +98,9 @@ export class PostService {
       },
       include: { user: true, likes: true, comments: true },
       orderBy: { createdAt: 'desc' }
-    })
+    });
+    console.log(posts)
+    return posts;
   };
 
   async getPostsByUserId(userId: number): Promise<PostType[]> {
