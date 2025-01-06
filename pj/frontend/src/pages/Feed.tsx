@@ -38,11 +38,6 @@ function Feed() {
     };
 
     useEffect(() => {
-        console.log('❤️ feed rendering')
-        console.log(data)
-        // console.log('searchdata!!!!!!!!!!d')
-        // console.log(searchData)
-
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting) {

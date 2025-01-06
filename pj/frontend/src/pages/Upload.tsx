@@ -24,13 +24,8 @@ function Upload() {
     const fileRef = useRef<HTMLInputElement>(null);
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            console.log('e.target')
-            console.log(e.target)
-            console.log(e.target.files)
             setFileDisplay(URL.createObjectURL(e.target.files[0]));
             setFileData(e.target.files[0]);
-            console.log('file data')
-            console.log(fileData)
         }
     };
 
@@ -43,25 +38,25 @@ function Upload() {
         //     text: caption,
         //     video: fileData
         // }
-        update: (cache, { data }) => {
-            // 새로 업로드된 포스트를 캐시에 추가
-            console.log('update')
-            const newPost = data.createPost;
-            console.log('newPost')
-            console.log(newPost)
+        // update: (cache, { data }) => {
+        //     // 새로 업로드된 포스트를 캐시에 추가
+        //     console.log('update')
+        //     const newPost = data.createPost;
+        //     console.log('newPost')
+        //     console.log(newPost)
     
-            const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 10 } });
-            console.log('existingPosts');
-            console.log(existingPosts);
+        //     const existingPosts = cache.readQuery({ query: GET_ALL_POSTS, variables: { skip: 0, take: 10 } });
+        //     console.log('existingPosts');
+        //     console.log(existingPosts);
 
-            cache.writeQuery({
-                query: GET_ALL_POSTS,
-                variables: { skip: 0, take: 10 },
-                data: {
-                    getPosts: [newPost, ...existingPosts.getPosts],
-                },
-            });
-        },
+        //     cache.writeQuery({
+        //         query: GET_ALL_POSTS,
+        //         variables: { skip: 0, take: 10 },
+        //         data: {
+        //             getPosts: [newPost, ...existingPosts.getPosts],
+        //         },
+        //     });
+        // },
         refetchQueries: [
             { query: GET_ALL_POSTS, variables: { skip: 0, take: 10, keyword: "" }},
             { query: GET_POSTS_BY_USER_ID, variables: { userId: loggedInUserId } },        

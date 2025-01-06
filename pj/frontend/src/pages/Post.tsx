@@ -84,8 +84,6 @@ function Post() {
     // 포스트 삭제
     const [deletePost] = useMutation(DELETE_POST, {
         update(cache, { data: {deletePost}}) {
-            console.log('deletePost----------');
-            console.log(deletePost);
 
             const deletedPostId = deletePost.id;
             const existingPosts = cache.readQuery<GetPostsQuery>({
@@ -149,17 +147,12 @@ function Post() {
 
     const loopThroughPostsUp = () => {
         if (currentPostIdIndex === 0) return;
-        // getallpostsㅆ지말고다른방법?????
         const nextPostId = dataAllPosts?.getPosts[currentPostIdIndex - 1].id;
         navigate(`/post/${nextPostId}`);
         setCurrentPostIdIndex((prevIndex) => prevIndex - 1);
     };
 
     const loopThroughPostsDown = () => {
-        console.log('currentPostIndex')
-        console.log(currentPostIdIndex);
-        console.log(dataAllPosts?.getPosts.length);
-        
         if (currentPostIdIndex === dataAllPosts?.getPosts.length - 1) return;
         const nextPostId = dataAllPosts?.getPosts[currentPostIdIndex + 1].id;
         navigate(`/post/${nextPostId}`);
@@ -341,7 +334,6 @@ function Post() {
     // 좋아요 상태 업데이트 (현재 로그인한 사용자와 포스트 좋아요 상태 확인)
     useEffect(() => {
         if (dataPost) {
-            console.log('💚')
             console.log(dataPost.getPostById.likes)
             const liked = dataPost.getPostById.likes.some(
                 (like) => like.userId === loggedInUserId

@@ -34,8 +34,6 @@ function Login() {
             if (resp?.data?.login.user) {
                 
                 const user = resp.data.login.user;
-                console.log('🧑');
-                console.log(user);
 
                 setUser({
                     id: user.id,

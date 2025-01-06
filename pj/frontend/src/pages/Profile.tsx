@@ -36,12 +36,6 @@ function Profile() {
         },
     });
 
-    useEffect(() => {
-        console.log('-------프로필 엑박 이미지 확인--------')
-        console.log('user store의 user 확인');
-        console.log(user);
-    }, [id])
-
     return (
         <MainLayout>
             <div className="pt-[70px] w-full max-w-[690px] mx-auto">

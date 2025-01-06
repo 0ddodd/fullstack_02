@@ -80,9 +80,7 @@ function PostFeed({post}: {post: PostType}) {
                     ...existingPost.getPostById,
                     likes: [...existingPost.getPostById.likes, likePost]
                 };
-                console.log('🆕')
-                console.log(updatedPost);
-    
+
                 cache.writeQuery({
                     query: GET_POST_BY_ID,
                     variables: { id: post.id },
@@ -161,9 +159,6 @@ function PostFeed({post}: {post: PostType}) {
     };
 
     useEffect(() => {
-        console.log('post video1!!!!')
-        console.log(post.video)
-        
         if (video.current) {
             video.current
             .play()
